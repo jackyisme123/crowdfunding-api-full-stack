@@ -45,7 +45,8 @@ let
             },
             port: {
                 format: 'port',
-                default: 6033,
+                // default: 6033,
+                default: 3306,
                 arg: 'mysql-port',
                 env: 'SENG365_MYSQL_PORT'
             },
