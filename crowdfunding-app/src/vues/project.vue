@@ -84,5 +84,75 @@
                 </div>
             </div>
         </div>
+        <!-- signup model -->
+        <div id="signupModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm" role="content">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Sign Up</h4>
+                        <button type="button" class="close" data-dismiss="modal">
+                            &times;
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="register_form">
+                            <div class="form-group row">
+                                <label class="sr-only" for="signupInputUsername">Username</label>
+                                <input type="text" class="form-control form-control-sm offset-1 col-6" id="signupInputUsername" placeholder="Username" v-model="username">
+                                <span style="color: red">*</span>
+                                <label class="col">{{username}}</label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="sr-only" for="signupEmail">Email</label>
+                                <input type="email" class="form-control form-control-sm offset-1 col-6" id="signupEmail" placeholder="Email" v-model="email">
+                                <span style="color: red">*</span>
+                                <label class="col">{{email}}</label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="sr-only" for="signupInputPassword">Password</label>
+                                <input type="password" class="form-control form-control-sm offset-1 col-6" id="signupInputPassword" placeholder="Password" v-model="pwd">
+                                <span style="color: red">*</span>
+                                <label class="col"></label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="sr-only" for="signupInputPassword2">Confirm Password</label>
+                                <input type="password" class="form-control form-control-sm offset-1 col-6" id="signupInputPassword2" placeholder="Confirm Password" v-model="confirmpwd">
+                                <span style="color: red">*</span>
+                                <label class="col"></label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="sr-only" for="signupLocation">Location</label>
+                                <input type="password" class="form-control form-control-sm offset-1 col-9" id="signupLocation" placeholder="Location" v-model="location">
+                                <label class="col"></label>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="register()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
+
+<script>
+    export default {
+        data() {
+            return {
+                username:'',
+                email: '',
+                pwd:'',
+                confirmpwd:'',
+                location:''
+            }
+        },
+        methods: {
+            register: function () {
+                console.log(this.username);
+            }
+        }
+    }
+</script>

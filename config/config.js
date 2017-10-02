@@ -60,7 +60,8 @@ let
             },
             database: {
                 format: String,
-                default: 'mysql'
+                // default: 'mysql'
+                default: 'seng365'
             }
         }
     });

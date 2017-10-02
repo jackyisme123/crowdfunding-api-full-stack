@@ -6,10 +6,10 @@ import Project from './vues/project.vue'
 import Contact from './vues/contact.vue'
 
 import VueRouter from 'vue-router';
-// import VueResource from '/vue-resource';
+import VueResource from 'vue-resource';
 Vue.use(VueRouter);
-// Vue.use(VueResource);
-//Vue.http.options.emulateJSON = true;
+Vue.use(VueResource);
+// Vue.http.options.emulateJSON = true;
 
 const routes = [
     {
