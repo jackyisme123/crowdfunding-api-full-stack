@@ -106,3 +106,28 @@ body.modal-open[style] {
     cursor: pointer;
     margin-left: 0;
 }
+
+.dropdown-menu {
+    background-color: #D1C4E9;
+    color: #512DA8;
+    font-family: "Times New Roman";
+    font-size: 1em;
+    margin:10px;
+}
+
+.dropdown-header{
+    font-family: sans-serif ;
+    font-weight: bold;
+}
+
+.menu-item{
+    text-indent: 1.5em;
+}
+
+.menu-item :hover{
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+
+

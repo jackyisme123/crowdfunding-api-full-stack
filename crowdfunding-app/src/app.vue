@@ -270,12 +270,13 @@
             log_in() {
                 this.$http.post('http://localhost:4941/api/v2/users/login?username='+this.login_username+'&password='+this.login_pwd)
                     .then(function (res) {
-                        if(res.status===200&'token' in res.body){
+                        console.log(res);
+                        if(res.status==200&&'token' in res.body){
                             this.$session.start();
                             this.$session.set('username', this.login_username);
                             this.$session.set('id', res.body.id);
                             this.$session.set('token', res.body.token);
-                            Vue.http.headers.common['X-Authorization']=res.body.token;
+//                            Vue.http.headers.common['X-Authorization']=res.body.token;
                             $("#loginModal").modal('hide');
                             this.default_login_modal();
                             this.$router.push({path: '/profile'});

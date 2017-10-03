@@ -14,16 +14,27 @@
                             <li class="nav-item"><router-link :to="{path: './login_project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
                             <li class="nav-item"><router-link :to="{path: './login_contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
                         </ul>
-                        <span class="navbar-text col-12 col-lg-2">
-                    <a data-toggle="modal" data-target="#loginModal">
-                    <span class="fa fa-sign-in fa-lg"></span>
-                    <span>{{login_username}}'s profile</span></a>
-                </span>
-                        <span class="navbar-text col-12 col-lg-2">
-                    <a data-toggle="modal" data-target="#signupModal">
-                    <span class="fa fa-user-plus fa-lg"></span>
-                    <span> Sign up</span></a>
-                </span>
+                        <div class="dropdown">
+                        <div class="navbar-text dropdown-toggle" id="user_menu" data-toggle="dropdown">
+                            &nbsp&nbsp&nbsp&nbsp<span class="fa fa-user fa-lg">&nbsp&nbsp{{login_username}}</span>
+                            <b class="caret"></b>
+                        </div>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="user_menu">
+                                <li class="dropdown-header">Project</li>
+                                <li role="presentation" class="menu-item"><a>Create New</a></li>
+                                <li role="presentation" class="menu-item"><a>My Project</a></li>
+                                <li role="presentation" class="menu-item"><a>My Pledge</a></li>
+                                <li class="menu-item" style="color:#808080">---------------</li>
+                                <li class="dropdown-header">Setting</li>
+                                <li role="presentation" class="menu-item"><a>My Profile</a></li>
+                                <li role="presentation" class="menu-item"><a>Modify User</a></li>
+                                <li role="presentation" class="menu-item"><a>Delete User</a></li>
+                                <li class="menu-item" style="color:#808080">---------------</li>
+                                <li role="presentation" class="menu-item"><a>Logout</a></li>
+
+                            </ul>
+
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -48,10 +59,10 @@
                     <div class="col-5 offset-1 col-lg-2">
                         <h5>Links</h5>
                         <ul class="list-unstyled">
-                            <li><router-link :to="{path: './'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
-                            <li><router-link :to="{path: './about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
-                            <li><router-link :to="{path: './project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
-                            <li><router-link :to="{path: './contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
+                            <li><router-link :to="{path: './login_home'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
+                            <li><router-link :to="{path: './lgoin_about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
+                            <li><router-link :to="{path: './login_project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
+                            <li><router-link :to="{path: './longin_contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
 
                         </ul>
                     </div>
@@ -90,9 +101,10 @@
 
 <script>
     export default {
-        data: {
-
-        },
-        props: ['login_username']
+        data() {
+            return {
+                login_username:this.$session.get('username')
+            }
+        }
     }
 </script>
