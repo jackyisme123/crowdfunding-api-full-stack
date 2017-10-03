@@ -80,7 +80,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          <div style="color: red; font-family: 'Times New Roman', Times, serif;">{{error_msg}}</div>
+          <div style="font-family: 'Times New Roman', Times, serif;" v-bind:style="{color:error_msg_color}">{{error_msg}}</div>
           <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" @click="default_signup_modal()">Cancel</button>
           <button type="button" class="btn btn-primary btn-sm" @click="register()">Submit</button>
         </div>
@@ -119,9 +119,9 @@
                 error_msg: '',
                 login_username:'',
                 login_pwd:'',
-                login_info:{},
                 login_error_msg:'',
-                remember_me:0
+                remember_me:0,
+                error_msg_color:'white'
 
             }
         },
@@ -241,6 +241,7 @@
                 this.flag_pwd = false;
                 this.flag_confirmpwd = false;
                 this.error_msg = '';
+                this.error_msg_color='white';
             },
             register() {
                 if (this.flag_username && this.flag_email && this.flag_pwd && this.flag_confirmpwd == true) {
@@ -252,23 +253,33 @@
                             "location": this.sign_location
                         }
                     ).then(function (res) {
+                        this.error_msg_color='green';
+                        this.error_msg = 'Woooow, '+this.sign_username+' has been successfully created';
+                    },function (error) {
+                        this.error_msg_color='red';
+                        this.error_msg = 'Username or email address has been occupied or other errors happen';
+                    }).then(setTimeout(function () {
                         $("#signupModal").modal('hide');
                         this.default_signup_modal();
-//to login profile page
-                    },function (error) {
-                        this.error_msg = 'Username or email address has been occupied or other errors happen';
-                    });
+                    },3000));
                 } else {
+                    this.error_msg_color='red';
                     this.error_msg = 'Wrong enter, please check sign up information';
                 }
             },
             log_in() {
                 this.$http.post('http://localhost:4941/api/v2/users/login?username='+this.login_username+'&password='+this.login_pwd)
                     .then(function (res) {
-                        this.login_info=res.data;
-                        $("#loginModal").modal('hide');
-                        this.default_login_modal();
-                        //forward to login page
+                        if(res.status===200&'token' in res.body){
+                            this.$session.start();
+                            this.$session.set('username', this.login_username);
+                            this.$session.set('id', res.body.id);
+                            this.$session.set('token', res.body.token);
+                            Vue.http.headers.common['X-Authorization']=res.body.token;
+                            $("#loginModal").modal('hide');
+                            this.default_login_modal();
+                            this.$router.push({path: '/profile'});
+                        }
                     }, function (error) {
                       this.login_error_msg='Incorrect';
                         this.login_username='';

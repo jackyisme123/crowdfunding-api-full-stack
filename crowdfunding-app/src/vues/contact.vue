@@ -63,7 +63,7 @@
                             New Zealand<br>
                             <i class="fa fa-phone fa-lg"></i> +852 1234 5678<br>
                             <i class="fa fa-fax"></i> +852 8765 4321<br>
-                            <i class="fa fa-envelope"></i> <a href="mailto:confusion@food.net">confusion@food.net</a>
+                            <i class="fa fa-envelope"></i> <a href="mailto:ycu20@uclive.ac.nz">ycu20@uclive.ac.nz</a>
                         </address>
                     </div>
                     <div class="col col-lg align-self-center">
@@ -73,7 +73,7 @@
                             <a class="btn btn-social-icon btn-linkedin" href="http://www.linkedin.com/in/"><i class="fa fa-linkedin"></i></a>
                             <a class="btn btn-social-icon btn-twitter" href="http://twitter.com/"><i class="fa fa-twitter"></i></a>
                             <a class="btn btn-social-icon btn-youtube" href="http://youtube.com/"><i class="fa fa-youtube"></i></a>
-                            <a class="btn btn-social-icon" href="mailto:"><i class="fa fa-envelope-o"></i></a>
+                            <a class="btn btn-social-icon" href="mailto:ycu20@uclive.ac.nz"><i class="fa fa-envelope-o"></i></a>
                         </div>
                     </div>
                 </div>
@@ -84,75 +84,5 @@
                 </div>
             </div>
         </div>
-        <!-- signup model -->
-        <div id="signupModal" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-sm" role="content">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Sign Up</h4>
-                        <button type="button" class="close" data-dismiss="modal">
-                            &times;
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="register_form">
-                            <div class="form-group row">
-                                <label class="sr-only" for="signupInputUsername">Username</label>
-                                <input type="text" class="form-control form-control-sm offset-1 col-6" id="signupInputUsername" placeholder="Username" v-model="username">
-                                <span style="color: red">*</span>
-                                <label class="col">{{username}}</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="sr-only" for="signupEmail">Email</label>
-                                <input type="email" class="form-control form-control-sm offset-1 col-6" id="signupEmail" placeholder="Email" v-model="email">
-                                <span style="color: red">*</span>
-                                <label class="col">{{email}}</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="sr-only" for="signupInputPassword">Password</label>
-                                <input type="password" class="form-control form-control-sm offset-1 col-6" id="signupInputPassword" placeholder="Password" v-model="pwd">
-                                <span style="color: red">*</span>
-                                <label class="col"></label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="sr-only" for="signupInputPassword2">Confirm Password</label>
-                                <input type="password" class="form-control form-control-sm offset-1 col-6" id="signupInputPassword2" placeholder="Confirm Password" v-model="confirmpwd">
-                                <span style="color: red">*</span>
-                                <label class="col"></label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="sr-only" for="signupLocation">Location</label>
-                                <input type="password" class="form-control form-control-sm offset-1 col-9" id="signupLocation" placeholder="Location" v-model="location">
-                                <label class="col"></label>
-                            </div>
-
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary btn-sm" v-on:click="register()">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </template>
-
-<script>
-    export default {
-        data() {
-            return {
-                username:'',
-                email: '',
-                pwd:'',
-                confirmpwd:'',
-                location:''
-            }
-        },
-        methods: {
-            register: function () {
-                console.log(this.username);
-            }
-        }
-    }
-</script>

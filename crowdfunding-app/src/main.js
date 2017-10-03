@@ -4,11 +4,15 @@ import Home from './vues/home.vue'
 import About from './vues/about.vue'
 import Project from './vues/project.vue'
 import Contact from './vues/contact.vue'
+import Profile from './vues/profile.vue'
+
 
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
+import VueSession from 'vue-session';
 Vue.use(VueRouter);
 Vue.use(VueResource);
+Vue.use(VueSession);
 // Vue.http.options.emulateJSON = true;
 
 const routes = [
@@ -27,6 +31,10 @@ const routes = [
     {
         path: "/contact",
         component: Contact
+    },
+    {
+        path: "/profile",
+        component: Profile
     }
 ];
 
