@@ -49,31 +49,31 @@
           <form id="register_form">
             <div class="form-group row">
               <label class="sr-only" for="signupInputUsername">Username</label>
-              <input type="text" class="form-control form-control-sm offset-1 col-6" id="signupInputUsername" placeholder="Username" v-model="sign_username" @mouseleave="check_sign_username()">
+              <input type="text" class="form-control form-control-sm offset-1 col-6" id="signupInputUsername" placeholder="Username" v-model="sign_username" @blur="check_sign_username()">
               <span style="color: red">*</span>
               <span class="col" id="username_msg" v-bind:style="{color:username_msg_color}">{{sign_username_msg}}</span>
             </div>
             <div class="form-group row">
               <label class="sr-only" for="signupEmail">Email</label>
-              <input type="email" class="form-control form-control-sm offset-1 col-6" id="signupEmail" placeholder="Email" v-model="sign_email" @mouseleave="check_sign_email()">
+              <input type="email" class="form-control form-control-sm offset-1 col-6" id="signupEmail" placeholder="Email" v-model="sign_email" @blur="check_sign_email()">
               <span style="color: red">*</span>
               <label class="col" id="email_msg" v-bind:style="{color:email_msg_color}">{{sign_email_msg}}</label>
             </div>
             <div class="form-group row">
               <label class="sr-only" for="signupInputPassword">Password</label>
-              <input type="password" class="form-control form-control-sm offset-1 col-6" id="signupInputPassword" placeholder="Password" v-model="sign_pwd" @mouseleave="check_sign_pwd()">
+              <input type="password" class="form-control form-control-sm offset-1 col-6" id="signupInputPassword" placeholder="Password" v-model="sign_pwd" @blur="check_sign_pwd()">
               <span style="color: red">*</span>
               <label class="col" id="pwd_msg" v-bind:style="{color:pwd_msg_color}">{{sign_pwd_msg}}</label>
             </div>
             <div class="form-group row">
               <label class="sr-only" for="signupInputPassword2">Confirm Password</label>
-              <input type="password" class="form-control form-control-sm offset-1 col-6" id="signupInputPassword2" placeholder="Confirm Password" v-model="sign_confirmpwd " @mouseleave="confirm_sign_pwd()">
+              <input type="password" class="form-control form-control-sm offset-1 col-6" id="signupInputPassword2" placeholder="Confirm Password" v-model="sign_confirmpwd " @blur="confirm_sign_pwd()">
               <span style="color: red">*</span>
               <label class="col" id="confirmpwd_msg" v-bind:style="{color:confirmpwd_msg_color}">{{sign_confirmpwd_msg}}</label>
             </div>
             <div class="form-group row">
               <label class="sr-only" for="signupLocation">Location</label>
-              <input type="text" class="form-control form-control-sm offset-1 col-9" id="signupLocation" placeholder="Location" v-model="sign_location" @mouseleave="check_sign_location()">
+              <input type="text" class="form-control form-control-sm offset-1 col-9" id="signupLocation" placeholder="Location" v-model="sign_location" @blur="check_sign_location()">
               <label class="col" id="location_msg" v-bind:style="{color:location_msg_color}">{{sign_location_msg}}</label>
             </div>
 
@@ -82,7 +82,7 @@
         <div class="modal-footer">
           <div style="font-family: 'Times New Roman', Times, serif;" v-bind:style="{color:error_msg_color}">{{error_msg}}</div>
           <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" @click="default_signup_modal()">Cancel</button>
-          <button type="button" class="btn btn-primary btn-sm" @click="register()">Submit</button>
+          <button type="button" class="btn btn-primary btn-sm" @click="register()">Sign & Login</button>
         </div>
       </div>
     </div>
@@ -253,15 +253,26 @@
                             "location": this.sign_location
                         }
                     ).then(function (res) {
-                        this.error_msg_color='green';
-                        this.error_msg = 'Woooow, '+this.sign_username+' has been successfully created';
+                        this.login_username=this.sign_username;
+                        this.login_pwd=this.sign_confirmpwd;
+                        this.default_signup_modal();
+                        $("#signupModal").modal('hide');
+                        this.$http.post('http://localhost:4941/api/v2/users/login?username='+this.login_username+'&password='+this.login_pwd)
+                            .then(function (res) {
+                                console.log(res);
+                                if(res.status==200&&'token' in res.body){
+                                    this.$session.start();
+                                    this.$session.set('username', this.login_username);
+                                    this.$session.set('id', res.body.id);
+                                    this.$session.set('token', res.body.token);
+                                    this.default_login_modal();
+                                    this.$router.push({path: '/profile'});
+                                }
+                            });
                     },function (error) {
                         this.error_msg_color='red';
                         this.error_msg = 'Username or email address has been occupied or other errors happen';
-                    }).then(setTimeout(function () {
-                        $("#signupModal").modal('hide');
-                        this.default_signup_modal();
-                    },3000));
+                    });
                 } else {
                     this.error_msg_color='red';
                     this.error_msg = 'Wrong enter, please check sign up information';

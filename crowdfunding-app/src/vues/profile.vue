@@ -21,19 +21,17 @@
                         </div>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="user_menu">
                                 <li class="dropdown-header">Project</li>
-                                <li role="presentation" class="menu-item"><a>Create New</a></li>
-                                <li role="presentation" class="menu-item"><a>My Project</a></li>
-                                <li role="presentation" class="menu-item"><a>My Pledge</a></li>
+                                <li role="presentation" class="menu-item" @click="create_new()"><a>Create New</a></li>
+                                <li role="presentation" class="menu-item" @click="my_project()"><a>My Project</a></li>
+                                <li role="presentation" class="menu-item" @click="my_pledge()"><a>My Pledge</a></li>
                                 <li class="menu-item" style="color:#808080">---------------</li>
                                 <li class="dropdown-header">Setting</li>
-                                <li role="presentation" class="menu-item"><a>My Profile</a></li>
-                                <li role="presentation" class="menu-item"><a>Modify User</a></li>
+                                <li role="presentation" class="menu-item" @click="my_profile()"><a>My Profile</a></li>
+                                <li role="presentation" class="menu-item" @click="modify_user()"><a>Modify User</a></li>
                                 <li role="presentation" class="menu-item"><a>Delete User</a></li>
                                 <li class="menu-item" style="color:#808080">---------------</li>
-                                <li role="presentation" class="menu-item"><a>Logout</a></li>
-
+                                <li role="presentation" class="menu-item" @click="log_out()"><a>Logout</a></li>
                             </ul>
-
                         </div>
                     </div>
                 </div>
@@ -105,6 +103,28 @@
             return {
                 login_username:this.$session.get('username')
             }
+        },
+        methods: {
+            log_out() {
+                this.$router.push({path: './'});
+                this.$session.destroy();
+            },
+            create_new() {
+                this.$router.push({path: './create_new'});
+            },
+            my_project() {
+                this.$router.push({path: './my_project'});
+            },
+            my_pledge() {
+                this.$router.push({path: './my_pledge'});
+            },
+            my_profile() {
+                this.$router.push({path: './profile'});
+            },
+            modify_user() {
+                this.$router.push({path: './user_modify'});
+            }
+
         }
     }
 </script>

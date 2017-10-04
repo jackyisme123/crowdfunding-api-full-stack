@@ -5,6 +5,11 @@ import About from './vues/about.vue'
 import Project from './vues/project.vue'
 import Contact from './vues/contact.vue'
 import Profile from './vues/profile.vue'
+import CreateNew from './vues/create_new.vue'
+import MyProject from './vues/my_project.vue'
+import MyPledge from './vues/my_pledge.vue'
+import UserModify from './vues/user_modify.vue'
+
 
 
 import VueRouter from 'vue-router';
@@ -35,6 +40,22 @@ const routes = [
     {
         path: "/profile",
         component: Profile
+    },
+    {
+        path: "/create_new",
+        component: CreateNew
+    },
+    {
+        path: "/my_project",
+        component: MyProject
+    },
+    {
+        path: "/my_pledge",
+        component: MyPledge
+    },
+    {
+        path: "/user_modify",
+        component: UserModify
     }
 ];
 
