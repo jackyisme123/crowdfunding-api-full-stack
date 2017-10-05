@@ -93,14 +93,14 @@ const remove = (id, done) => {
 
 /**
  * check password is correct for user
- * @param username
+ * @param identifier    either username or email
  * @param password
  * @param done  true if password is correct
  */
-const authenticate = (username, password, done) => {
+const authenticate = (username, email, password, done) => {
     db.get().query(
-        'SELECT id, hash, salt FROM users WHERE username=? AND deleted=false',
-        [username],
+        'SELECT id, hash, salt FROM users WHERE (username=? OR email=?) AND deleted=false',
+        [username, email],
         (err, results) => {
             if (err || results.length !== 1)
                 return done(true); // return error = true (failed auth)
@@ -113,17 +113,36 @@ const authenticate = (username, password, done) => {
     )
 };
 
+
+/**
+ * check if logged in
+ *
+ * @param id
+ * @param done
+ */
+const isLoggedIn = (id, done) => {
+    db.get().query(
+        'SELECT token FROM users WHERE id=? AND deleted=false',
+        [id],
+        (err, results) => {
+            if (results.length === 1 && results[0].token)
+                return done(true);
+            return done(false);
+        }
+    )
+};
+
 /**
  * create and store a new token for a user
  *
- * @param username
+ * @param id
  * @param done
  */
-const setToken = (username, done) => {
+const setToken = (id, done) => {
     let token = crypto.randomBytes(16).toString('hex');
     db.get().query(
-        'UPDATE users SET token=? WHERE username=?',
-        [token, username],
+        'UPDATE users SET token=? WHERE id=?',
+        [token, id],
         err => {return done(err, token)}
     )
 };
@@ -171,6 +190,7 @@ module.exports = {
     alter: alter,
     remove: remove,
     authenticate: authenticate,
+    isLoggedIn: isLoggedIn,
     setToken: setToken,
     removeToken: removeToken,
     getIdFromToken: getIdFromToken

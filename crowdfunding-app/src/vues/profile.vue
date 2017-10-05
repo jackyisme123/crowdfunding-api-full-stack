@@ -28,7 +28,7 @@
                                 <li class="dropdown-header">Setting</li>
                                 <li role="presentation" class="menu-item" @click="my_profile()"><a>My Profile</a></li>
                                 <li role="presentation" class="menu-item" @click="modify_user()"><a>Modify User</a></li>
-                                <li role="presentation" class="menu-item"><a>Delete User</a></li>
+                                <li role="presentation" class="menu-item" data-toggle="modal" data-target="#delete_user_modal"><a>Delete User</a></li>
                                 <li class="menu-item" style="color:#808080">---------------</li>
                                 <li role="presentation" class="menu-item" @click="log_out()"><a>Logout</a></li>
                             </ul>
@@ -50,7 +50,87 @@
                 </div>
             </div>
         </header>
-        <div id="body">Profile</div>
+        <div>
+            <br>
+            <div class="container">
+                <br>
+                <div class="row">
+                    <div class="col-12">
+                        <h3>My Profile</h3>
+                        <hr>
+                    </div>
+                </div>
+                    <br>
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item col-4 text-center">
+                            <a class="nav-link active" href="#profile" role="tab" data-toggle="tab">My Profile</a>
+                        </li>
+                        <li class="nav-item col-4 text-center">
+                            <a class="nav-link" href="#my_project" role="tab" data-toggle="tab">My Project</a>
+                        </li>
+                        <li class="nav-item col-4 text-center">
+                            <a class="nav-link" href="#my_pledge" role="tab" data-toggle="tab">My pledge</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpannel" class="tab-pane fade show active" id="profile">
+                            <br>
+                                <div class="row" style="height:50px">
+                                    <div class="offset-1 col-2" style="font-family: 'Times New Roman'; font-weight: bold">
+                                        Id:
+                                    </div>
+                                    <div class="offset-1 col">
+                                        {{login_user_id}}
+                                    </div>
+                                </div>
+                            <div class="row" style="height:50px">
+                                <div class="offset-1 col-2" style="font-family: 'Times New Roman'; font-weight: bold">
+                                    Name:
+                                </div>
+                                <div class="offset-1 col">
+                                    {{login_username}}
+                                </div>
+                            </div>
+                            <div class="row" style="height:50px">
+                                <div class="offset-1 col-2" style="font-family: 'Times New Roman'; font-weight: bold">
+                                    Email:
+                                </div>
+                                <div class="offset-1 col">
+                                    {{login_user_email}}
+                                </div>
+                            </div>
+                            <div class="row" style="height:50px">
+                                <div class="offset-1 col-2" style="font-family: 'Times New Roman'; font-weight: bold">
+                                    Address:
+                                </div>
+                                <div class="offset-1 col">
+                                    {{login_user_location}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="offset-1 col-lg-1 col-3">
+                                <button type="button" class="btn btn-sm btn-primary" @click="to_user_modify()">
+                                    Modify
+                                </button>
+                                </div>
+                                <div class="col-lg-1 col-3">
+                                <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#delete_user_modal">
+                                    Delete
+                                </button>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                        <div role="tabpannel" class="tab-pane fade" id="my_project">
+                        </div>
+                        <div role="tabpannel" class="tab-pane fade" id="my_pledge">
+
+                        </div>
+                </div>
+                <br>
+                <br>
+            </div>
+        </div>
         <div id="footer" class="footer">
             <div class="container">
                 <div class="row">
@@ -101,8 +181,14 @@
     export default {
         data() {
             return {
-                login_username:this.$session.get('username')
+                login_username:this.$session.get('username'),
+                login_user_id: '',
+                login_user_email: '',
+                login_user_location: ''
             }
+        },
+        mounted: function(){
+            this.get_login_user();
         },
         methods: {
             log_out() {
@@ -123,6 +209,23 @@
             },
             modify_user() {
                 this.$router.push({path: './user_modify'});
+            },
+            get_login_user() {
+                this.$http.get('http://localhost:4941/api/v2/users/'+this.$session.get('id'),
+                    {
+                        headers: {
+                            'X-Authorization': this.$session.get('token')
+                        }
+                    })
+                    .then(function (res) {
+                        console.log(res.body.id);
+                        this.login_user_id = res.body.id;
+                        this.login_user_email = res.body.email;
+                        this.login_user_location = res.body.location;
+                    })
+            },
+            to_user_modify() {
+                this.$router.push({path: '/user_modify'})
             }
 
         }

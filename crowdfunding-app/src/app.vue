@@ -87,6 +87,32 @@
       </div>
     </div>
   </div>
+  <!-- delete_user_modle -->
+  <div id="delete_user_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="content">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Delete User</h4>
+          <button type="button" class="close" data-dismiss="modal" @click="default_delete_user_modal()">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group row">
+              <label style="font-family: 'Times New Roman'" class="offset-1col-lg-6 col-10">Re-enter your username:</label>
+              <input type="text" class="form-control form-control-sm col-lg-4 offset-1 col-10" placeholder="Username" v-model="delete_username">
+              <label class="col-lg-12 offset-1 col-10" style="color:red; font-family: 'Times New Roman', Times, serif;">{{delete_user_msg}}</label>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" @click="default_delete_user_modal()">Cancel</button>
+              <button type="button" class="btn btn-warning btn-sm" @click="delete_user()">Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <router-view></router-view>
 </div>
 
@@ -102,16 +128,16 @@
                 sign_pwd: '',
                 sign_confirmpwd: '',
                 sign_location: '',
-                username_msg_color: 'black',
-                sign_username_msg: 'Enter username',
-                email_msg_color: 'black',
-                sign_email_msg: 'Enter email address',
-                pwd_msg_color: 'black',
-                sign_pwd_msg: 'Enter password',
-                confirmpwd_msg_color: 'black',
-                sign_confirmpwd_msg: 'Confirm password',
-                location_msg_color: 'black',
-                sign_location_msg: 'Location',
+                username_msg_color: '',
+                sign_username_msg: '',
+                email_msg_color: '',
+                sign_email_msg: '',
+                pwd_msg_color: '',
+                sign_pwd_msg: '',
+                confirmpwd_msg_color: '',
+                sign_confirmpwd_msg: '',
+                location_msg_color: '',
+                sign_location_msg: '',
                 flag_username: false,
                 flag_email: false,
                 flag_pwd: false,
@@ -121,8 +147,12 @@
                 login_pwd:'',
                 login_error_msg:'',
                 remember_me:0,
-                error_msg_color:'white'
-
+                error_msg_color:'white',
+                delete_user_msg:'',
+                delete_username:'',
+//                session_username: this.$session.get('username'),
+//                session_token: this.$session.get('token'),
+//                session_id: this.$session.get('id'),
             }
         },
         methods: {
@@ -221,16 +251,16 @@
                 this.sign_pwd = '';
                 this.sign_confirmpwd = '';
                 this.sign_location = '';
-                this.username_msg_color = 'black';
-                this.sign_username_msg = 'Enter username';
-                this.email_msg_color = 'black';
-                this.sign_email_msg = 'Enter email address';
-                this.pwd_msg_color = 'black';
-                this.sign_pwd_msg = 'Enter password';
-                this.confirmpwd_msg_color = 'black';
-                this.sign_confirmpwd_msg = 'Confirm password';
-                this.location_msg_color = 'black';
-                this.sign_location_msg = 'Location';
+                this.username_msg_color = '';
+                this.sign_username_msg = '';
+                this.email_msg_color = '';
+                this.sign_email_msg = '';
+                this.pwd_msg_color = '';
+                this.sign_pwd_msg = '';
+                this.confirmpwd_msg_color = '';
+                this.sign_confirmpwd_msg = '';
+                this.location_msg_color = '';
+                this.sign_location_msg = '';
                 document.getElementById("username_msg").className = 'col';
                 document.getElementById("email_msg").className = 'col';
                 document.getElementById("pwd_msg").className = 'col';
@@ -281,7 +311,7 @@
             log_in() {
                 this.$http.post('http://localhost:4941/api/v2/users/login?username='+this.login_username+'&password='+this.login_pwd)
                     .then(function (res) {
-                        console.log(res);
+//                        console.log(res);
                         if(res.status==200&&'token' in res.body){
                             this.$session.start();
                             this.$session.set('username', this.login_username);
@@ -305,6 +335,30 @@
                 this.login_pwd='';
                 this.login_error_msg='';
                 this.remember_me=0;
+            },
+            delete_user(){
+                console.log(this.delete_username+', '+this.$session.get('username'));
+                if (this.delete_username==this.$session.get('username')){
+                    this.$http.delete('http://localhost:4941/api/v2/users/'+this.$session.get('id'),
+                        {
+                            headers: {
+                                'X-Authorization': this.$session.get('token')
+                            }
+                        }).then(function (res) {
+                            this.default_delete_user_modal();
+                            this.$router.push({path: './'});
+                            this.$session.destroy();
+                            $("#delete_user_modal").modal('hide');
+                    }, function (err) {
+                        this.delete_user_msg = "Fail";
+                    });
+                } else{
+                    this.delete_user_msg="Incorrect username"
+                }
+            },
+            default_delete_user_modal(){
+                this.delete_user_msg='';
+                this.delete_username='';
             }
 
         }

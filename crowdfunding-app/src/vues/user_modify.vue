@@ -26,9 +26,9 @@
                                 <li role="presentation" class="menu-item" @click="my_pledge()"><a>My Pledge</a></li>
                                 <li class="menu-item" style="color:#808080">---------------</li>
                                 <li class="dropdown-header">Setting</li>
-                                <li role="presentation" class="menu-item"><a @click="my_profile()">My Profile</a></li>
+                                <li role="presentation" class="menu-item" @click="my_profile()"><a>My Profile</a></li>
                                 <li role="presentation" class="menu-item" @click="modify_user()"><a>Modify User</a></li>
-                                <li role="presentation" class="menu-item"><a>Delete User</a></li>
+                                <li role="presentation" class="menu-item" data-toggle="modal" data-target="#delete_user_modal"><a>Delete User</a></li>
                                 <li class="menu-item" style="color:#808080">---------------</li>
                                 <li role="presentation" class="menu-item" @click="log_out()"><a>Logout</a></li>
 
@@ -52,7 +52,7 @@
                 </div>
             </div>
         </header>
-        <div id="body">
+        <div>
             <br>
             <div class="container">
                 <br>

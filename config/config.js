@@ -36,6 +36,12 @@ let
             format: String,
             default: 'X-Authorization'
         },
+        sampledata: {
+            format: 'Boolean',
+            default: false,
+            arg: 'sampledata',
+            env: 'SAMPLE_DATA'
+        },
         db: {
             host: { // host, rather than hostname, as mysql connection string uses 'host'
                 format: String,
@@ -52,16 +58,22 @@ let
             },
             user: {
                 format: String,
-                default: 'root'
+                default: 'root',
+                arg: 'mysql-user',
+                env: 'SENG365_MYSQL_USER'
             },
             password: {
                 format: String,
-                default: 'secret'
+                default: 'secret',
+                arg: 'mysql-password',
+                env: 'SENG365_MYSQL_PASSWORD'
             },
             database: {
                 format: String,
-                // default: 'mysql'
-                default: 'seng365'
+                // default: 'mysql',
+                default: 'seng365',
+                arg: 'mysql-database',
+                env: 'SENG365_MYSQL_DATABASE'
             }
         }
     });
