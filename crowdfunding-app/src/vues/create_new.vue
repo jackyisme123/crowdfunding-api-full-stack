@@ -83,18 +83,18 @@
                             <div class="form-group row">
                                 <label for="pro_target" class="col-5 col-lg-2 col-form-label">Target<span style="color:red">*</span></label>
                                 <div class="col-7 col-lg-7">
-                                    <input type="text" class="form-control" id="pro_target" name="pro_target" placeholder="Target" v-model="pro_target"></input>
+                                    <input type="text" class="form-control" id="pro_target" name="pro_target" placeholder="Target" v-model="pro_target">
                                 </div>
                             </div>
                             <div class="form-group row" id="creators">
-                                <label for="creator_id1" class="col-5 col-lg-2 col-form-label">Creator ID<span style="color:red">*</span></label>
-                                <div class="col-6 col-lg-2">
-                                    <input type="text" class="form-control" id="creator_id1" name="creator_id1" placeholder="Creator1 ID"></input>
+                                <label class="col-5 col-lg-2 col-form-label">Creator ID<span style="color:red">*</span></label>
+                                <div :index="index" class="col-5 col-lg-2" v-for="(creator,index) in creators">
+                                    <input type="text" class="form-control" name="creator_id" placeholder="Creator ID" v-model="creators[index]">
                                 </div>
-                                <div col-lg-1><span class="fa fa-plus-circle col-12" style="color:green"></span><span class="fa fa-minus-circle col-12" style="color:red"></span></div>
+                                <div col-lg-1><span class="fa fa-plus-circle col-12" style="color:green" @click="creator_plus()"></span><span class="fa fa-minus-circle col-12" style="color:red" @click="creator_minus()"></span></div>
                             </div>
                             <div class="form-group row">
-                                <label for="pro_desc" class="col-5 col-lg-2 col-form-label">Description<span style="color:red">*</span></label>
+                                <label for="pro_desc" class="col-5 col-lg-2 col-form-label">Description</label>
                                 <div class="col-7 col-lg-7">
                                     <textarea type="text" class="form-control" rows="5" id="pro_desc" name="pro_desc" placeholder="Description" v-model="pro_desc"></textarea>
                                 </div>
@@ -103,20 +103,23 @@
                             <div class="form-group row">
                                 <h5>&nbsp&nbspRewards Detail (optional)</h5>
                             </div>
+                            <template :index_reward="index_reward" v-for="(amount, index_reward) in reward_amount">
                             <div class="form-group row">
-                                <label for="pro_title" class="col-5 col-lg-2 col-form-label">Amount<span style="color:red">*</span></label>
+                                <label class="col-5 col-lg-2 col-form-label">Amount</label>
                                 <div class="col-7 col-lg-7">
-                                    <input type="text" class="form-control" id="reward_amount" name="reward_amount" placeholder="Amount" v-model="reward_amount">
+                                    <input type="text" class="form-control" name="reward_amount" placeholder="Amount" v-model="reward_amount[index_reward]">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="pro_title" class="col-5 col-lg-2 col-form-label">Description<span style="color:red">*</span></label>
+                                <label class="col-5 col-lg-2 col-form-label">Description</label>
                                 <div class="col-7 col-lg-7">
-                                    <textarea type="text" class="form-control" rows="5" id="reward_desc" name="reward_desc" placeholder="Description" v-model="reward_desc"></textarea>
+                                    <textarea type="text" class="form-control" rows="5" name="reward_desc" placeholder="Description" v-model="reward_desc[index_reward]"></textarea>
                                 </div>
                             </div>
-
-                            <br><br>
+                            </template>
+                            <button class="btn btn-primary btn-sm text-white" @click="add_reward()">Add new</button>
+                            <br>
+                            <hr>
                             <div class="form-group row">
                                 <label class="col-lg-6 col-5" style="color:red">{{error_msg}}</label>
 
@@ -145,7 +148,7 @@
                         <h5>Links</h5>
                         <ul class="list-unstyled">
                             <li><router-link :to="{path: './login_home'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
-                            <li><router-link :to="{path: './lgoin_about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
+                            <li><router-link :to="{path: './login_about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
                             <li><router-link :to="{path: './login_project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
                             <li><router-link :to="{path: './login_contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
 
@@ -189,18 +192,18 @@
         data() {
             return {
                 user_id:this.$session.get('id'),
+                login_username:this.$session.get('username'),
                 session_token: this.$session.get('token'),
                 pro_title: '',
                 pro_subtitle:'',
                 pro_target:'',
-                creator_id:'',
                 pro_desc:'',
-                reward_amount:'',
-                reward_desc:'',
-                error_msg:''
+                reward_amount:[''],
+                reward_desc:[''],
+                error_msg:'',
+                creators: [''],
+
             }
-        },
-        mounted: function () {
         },
         methods: {
             log_out() {
@@ -223,14 +226,65 @@
                 this.pro_title= '';
                 this.pro_subtitle='';
                 this.pro_target='';
-                this.creator_id='';
                 this.pro_desc='';
-                this.reward_amount='';
-                this.reward_desc='';
+                this.reward_amount=[''];
+                this.reward_desc=[''];
                 this.error_msg='';
+                this.creators=[''];
             },
             create_new(){
+                let creators1 = [];
+                for(let creator_id of this.creators){
+                    if(creator_id!='') {
+                        creators1.push({'id': parseInt(creator_id)});
+                    }
+                }
+                let rewards =[];
+                for (let num in this.reward_amount) {
+                    if (this.reward_amount[num] != ''||this.reward_desc[num]!='') {
+                        rewards.push({'amount': parseInt(this.reward_amount[num])},{'description': this.reward_desc[num]});
+                    }
+                }
+                if(this.pro_title!=''&&this.pro_subtitle!=''&&this.pro_target!=''&&creators1.length!=0){
+                    this.$http.post('http://localhost:4941/api/v2/projects/',
+                        {
+                            "title":this.pro_title,
+                            "subtitle":this.pro_subtitle,
+                            "description": this.pro_desc,
+                            "target": parseInt(this.pro_target),
+                            "creators": creators1,
+                            "rewards": rewards
+                        },
+                        {
+                            headers: {
+                                'X-Authorization': this.$session.get('token')
+                            }
+                        }).then(function (res) {
+                        this.default_create_new();
+                        this.$router.push({path:'./my_project'});
+                    }, function (err) {
+                        this.error_msg='Error';
+                    })
+                }else{
+                    this.error_msg='red* options can not be empty';
+                }
 
+            },
+            creator_plus(){
+                if(this.creators.length <4){
+                    this.creators.push('');
+                }
+            },
+            creator_minus(){
+                if(this.creators.length >1){
+                    this.creators.pop();
+                }
+            },
+            add_reward(){
+                if(this.reward_amount.length<4) {
+                    this.reward_amount.push('');
+                    this.reward_desc.push('');
+                }
             }
 
 
