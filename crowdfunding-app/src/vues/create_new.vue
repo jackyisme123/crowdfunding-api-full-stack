@@ -103,7 +103,7 @@
                             <div class="form-group row">
                                 <h5>&nbsp&nbspRewards Detail (optional)</h5>
                             </div>
-                            <template :index_reward="index_reward" v-for="(amount, index_reward) in reward_amount">
+                            <div :index="index_reward" v-for="(amount, index_reward) in reward_amount">
                             <div class="form-group row">
                                 <label class="col-5 col-lg-2 col-form-label">Amount</label>
                                 <div class="col-7 col-lg-7">
@@ -116,8 +116,8 @@
                                     <textarea type="text" class="form-control" rows="5" name="reward_desc" placeholder="Description" v-model="reward_desc[index_reward]"></textarea>
                                 </div>
                             </div>
-                            </template>
-                            <button class="btn btn-primary btn-sm text-white" @click="add_reward()">Add new</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm text-white" type="button" @click="add_reward()">Add new</button>
                             <br>
                             <hr>
                             <div class="form-group row">
@@ -207,8 +207,22 @@
         },
         methods: {
             log_out() {
-                this.$router.push({path: './'});
-                this.$session.destroy();
+                console.log(this.$session.get('token'));
+                this.$http.post('http://localhost:4941/api/v2/users/logout/',
+                    {},
+                    {
+                        headers:
+                            {
+                                'X-Authorization': this.$session.get('token')
+                            },
+
+                    },
+                ).then(function(res){
+                    this.$router.push({path: './'});
+                    this.$session.destory();
+                }, function (err) {
+                    console.log(err);
+                })
             },
             create_new() {
                 this.$router.push({path: './create_new'});
@@ -236,13 +250,13 @@
                 let creators1 = [];
                 for(let creator_id of this.creators){
                     if(creator_id!='') {
-                        creators1.push({'id': parseInt(creator_id)});
+                        creators1.push({"id": parseInt(creator_id)});
                     }
                 }
                 let rewards =[];
                 for (let num in this.reward_amount) {
                     if (this.reward_amount[num] != ''||this.reward_desc[num]!='') {
-                        rewards.push({'amount': parseInt(this.reward_amount[num])},{'description': this.reward_desc[num]});
+                        rewards.push({"amount": parseInt(this.reward_amount[num])},{"description": this.reward_desc[num]});
                     }
                 }
                 if(this.pro_title!=''&&this.pro_subtitle!=''&&this.pro_target!=''&&creators1.length!=0){

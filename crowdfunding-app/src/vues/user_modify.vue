@@ -203,8 +203,22 @@
         },
         methods: {
             log_out() {
-                this.$router.push({path: './'});
-                this.$session.destroy();
+                console.log(this.$session.get('token'));
+                this.$http.post('http://localhost:4941/api/v2/users/logout/',
+                    {},
+                    {
+                        headers:
+                            {
+                                'X-Authorization': this.$session.get('token')
+                            },
+
+                    },
+                ).then(function(res){
+                    this.$router.push({path: './'});
+                    this.$session.destory();
+                }, function (err) {
+                    console.log(err);
+                })
             },
             create_new() {
                 this.$router.push({path: './create_new'});
