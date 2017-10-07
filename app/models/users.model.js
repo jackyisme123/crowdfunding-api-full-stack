@@ -169,6 +169,7 @@ const removeToken = (token, done) => {
  * @param done
  * @returns {*}
  */
+
 const getIdFromToken = (token, done) => {
     if (token === undefined || token === null)
         return done(true, null);

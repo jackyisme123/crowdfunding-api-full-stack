@@ -9,7 +9,7 @@ import CreateNew from './vues/create_new.vue'
 import MyProject from './vues/my_project.vue'
 import MyPledge from './vues/my_pledge.vue'
 import UserModify from './vues/user_modify.vue'
-
+import ProjectDetail from './vues/project_detail.vue'
 
 
 import VueRouter from 'vue-router';
@@ -47,7 +47,11 @@ const routes = [
     },
     {
         path: "/my_project",
-        component: MyProject
+        component: MyProject,
+    },
+    {
+        path: "/project_detail/:pro_id",
+        component: ProjectDetail,
     },
     {
         path: "/my_pledge",

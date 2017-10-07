@@ -254,21 +254,34 @@
                     }
                 }
                 let rewards =[];
-                for (let num in this.reward_amount) {
-                    if (this.reward_amount[num] != ''||this.reward_desc[num]!='') {
-                        rewards.push({"amount": parseInt(this.reward_amount[num])},{"description": this.reward_desc[num]});
+                let create_json;
+                if(this.reward_amount[0] != '') {
+                    for (let num in this.reward_amount) {
+                        if (this.reward_amount[num] != '' && this.reward_desc[num] != '') {
+                            rewards.push({"amount": parseInt(this.reward_amount[num]), "description": this.reward_desc[num]});
+                        }
+                    }
+                    create_json={
+                        "title":this.pro_title,
+                        "subtitle":this.pro_subtitle,
+                        "description": this.pro_desc,
+                        "target": parseInt(this.pro_target),
+                        "creators": creators1,
+                        "rewards": rewards
+                    }
+                }else{
+                    create_json={
+                        "title":this.pro_title,
+                        "subtitle":this.pro_subtitle,
+                        "description": this.pro_desc,
+                        "target": parseInt(this.pro_target),
+                        "creators": creators1
                     }
                 }
+
                 if(this.pro_title!=''&&this.pro_subtitle!=''&&this.pro_target!=''&&creators1.length!=0){
-                    this.$http.post('http://localhost:4941/api/v2/projects/',
-                        {
-                            "title":this.pro_title,
-                            "subtitle":this.pro_subtitle,
-                            "description": this.pro_desc,
-                            "target": parseInt(this.pro_target),
-                            "creators": creators1,
-                            "rewards": rewards
-                        },
+                    this.$http.post('http://localhost:4941/api/v2/projects/',create_json
+                        ,
                         {
                             headers: {
                                 'X-Authorization': this.$session.get('token')

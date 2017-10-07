@@ -187,6 +187,9 @@
                 login_user_location: ''
             }
         },
+        mounted: function () {
+            this.get_login_user();
+        },
         methods: {
             log_out() {
                 console.log(this.$session.get('token'));
@@ -229,7 +232,6 @@
                         }
                     })
                     .then(function (res) {
-                        console.log(res.body.id);
                         this.login_user_id = res.body.id;
                         this.login_user_email = res.body.email;
                         this.login_user_location = res.body.location;
