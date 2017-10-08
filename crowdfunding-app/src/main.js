@@ -10,6 +10,7 @@ import MyProject from './vues/my_project.vue'
 import MyPledge from './vues/my_pledge.vue'
 import UserModify from './vues/user_modify.vue'
 import ProjectDetail from './vues/project_detail.vue'
+import LoginProject from './vues/login_project.vue'
 
 
 import VueRouter from 'vue-router';
@@ -60,6 +61,10 @@ const routes = [
     {
         path: "/user_modify",
         component: UserModify
+    },
+    {
+        path: "/login_project",
+        component: LoginProject
     }
 ];
 

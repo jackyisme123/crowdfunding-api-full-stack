@@ -125,13 +125,13 @@
 
                                 <div class="col-lg-1 col-3">
 
-                                    <button type="button" class="btn btn-primary" @click="create_new()">
+                                    <button type="button" class="btn btn-md btn-primary" @click="create_new()">
                                         Submit
                                     </button>
                                 </div>
                                 &nbsp&nbsp&nbsp&nbsp
                                 <div class="col-lg-1 col-3">
-                                    <button type="button" class="btn btn-warning" @click="default_create_new()">
+                                    <button type="button" class="btn btn-md btn-warning" @click="default_create_new()">
                                         Empty
                                     </button>
                                 </div>

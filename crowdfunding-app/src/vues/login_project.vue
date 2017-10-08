@@ -58,7 +58,7 @@
                 <br>
                 <div class="row">
                     <div class="col-12">
-                        <h3>My project</h3>
+                        <h3>Project Summary</h3>
                         <hr>
                     </div>
                 </div>
@@ -76,13 +76,21 @@
                                     <th class="text-center col-2 col-lg-2"></th>
                                 </tr>
                                 </thead>
-                                <tbody v-if="empty_flag==1" v-for="project in my_projects">
+                                <tbody v-if="empty_flag==1" v-for="project in projects">
                                 <tr class="row">
                                     <td class="col-2 col-lg-2">{{project.id}}</td>
                                     <td class="col-2 col-lg-2">{{project.imageUri}}</td>
                                     <td class="col-3 col-lg-3">{{project.title}}</td>
                                     <td class="col-3 col-lg-3">{{project.subtitle}}</td>
-                                    <td class="col-2 col-lg-2"><button class="btn btn-secondary" type="button" @click="view_detail(project.id)">Detail</button></td>
+                                    <div v-if="as_creator_id.indexOf(project.id)!=-1" class="col-2 col-lg-2">
+                                        <td ><button class="btn btn-secondary" type="button" @click="view_creator(project.id)">creator</button></td>
+                                    </div>
+                                    <div v-else-if="as_backer_id.indexOf(project.id)!=-1" class="col-2 col-lg-2">
+                                        <td><button class="btn btn-secondary" type="button" @click="view_backer(project.id)">backer</button></td>
+                                    </div>
+                                    <div v-else="" class="col-2 col-lg-2">
+                                        <td><button class="btn btn-secondary" type="button" @click="view_pledge(project.id)">view</button></td>
+                                    </div>
                                 </tr>
                                 </tbody>
                                 <tbody v-if="empty_flag==0">
@@ -153,8 +161,12 @@
                 user_id:this.$session.get('id'),
                 login_username:this.$session.get('username'),
                 session_token: this.$session.get('token'),
-                my_projects: [],
-                empty_flag: 0
+                projects: [],
+                empty_flag: 0,
+                as_creator_projects:[],
+                as_creator_id:[],
+                as_backer_projects:[],
+                as_backer_id:[]
             }
         },
         mounted: function () {
@@ -192,22 +204,55 @@
                 this.$router.push({path: '/profile'});
             },
             view_my_project(){
-                this.$http.get('http://localhost:4941/api/v2/projects?open=true&creator='+this.user_id)
+                this.$http.get('http://localhost:4941/api/v2/projects?open=true')
                     .then(function (res) {
                         if(res.body.length==0){
                             this.empty_flag=0;
+                            return;
                         }else{
                             this.empty_flag=1;
-                            this.my_projects=res.body;
+                            this.projects=res.body;
+                            this.$http.get('http://localhost:4941/api/v2/projects?open=true&creator='+this.user_id)
+                                .then(function (res1) {
+                                    this.as_creator_projects=res1.body;
+                                    for(let creator_project of this.as_creator_projects){
+                                        this.as_creator_id.push(creator_project.id);
+                                    }
+                                    this.$http.get('http://localhost:4941/api/v2/projects?open=true&backer='+this.user_id)
+                                        .then(function (res2) {
+                                            this.as_backer_projects=res2.body;
+                                            for(let backer_project of this.as_backer_projects){
+                                                this.as_backer_id.push(backer_project.id);
+                                            }
+                                            for(let project1 of this.projects){
+                                                if(this.as_creator_id.indexOf(project1.id)!=-1){
+                                                    project1["status"]=0;
+                                                }else if(this.as_backer_id.indexOf(project1.id)!=-1){
+                                                    project1["status"]=1;
+                                                }else{
+                                                    project1["status"]=2;
+                                                }
+                                            }
+                                        });
+
+                                });
                         }
-                    })
+                    });
             },
-            view_detail(pro_id) {
+            view_creator(pro_id) {
                 this.$session.set('pro_status', 'my_project');
                 this.$router.push({path: '/project_detail/'+ pro_id});
 
-            }
+            },
+            view_backer(pro_id) {
+                this.$router.push({path: '/project_detail/'+ pro_id});
 
+            },
+            view_pledge(pro_id) {
+                this.$session.set('pro_status', 'make_pledge');
+                this.$router.push({path: '/project_detail/'+ pro_id});
+
+            },
 
         }
     }

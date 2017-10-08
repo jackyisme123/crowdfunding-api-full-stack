@@ -148,13 +148,11 @@
         },
         methods: {
             get_all_projects(){
-                this.$http.get('http://localhost:4941/api/v2/projects/')
+                this.$http.get('http://localhost:4941/api/v2/projects?open=true')
                     .then(function (res) {
                     if(res.body.length==0){
-                        console.log(res.body.length);
                         this.empty_flag=0;
                     }else{
-                        console.log(res.body.length);
                         this.empty_flag=1;
                         this.projects=res.body;
                     }

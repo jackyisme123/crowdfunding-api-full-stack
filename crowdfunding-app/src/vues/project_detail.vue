@@ -179,11 +179,11 @@
                         <div v-if="this.$session.get('pro_status')=='my_project'">
                             <button class="btn-sm btn btn-primary col-3 col-lg-2" type="button" data-toggle="modal" data-target="#modify_rewards_modal">Modify</button>
                             <button class="btn-sm btn btn-danger col-3 col-lg-2" type="button" data-toggle="modal" data-target="#close_project_modal">Close</button>
-                            <button class="btn-sm btn btn-warning col-3" type="back" @click="last_page()">Back</button>
+                            <button class="btn-sm btn btn-warning col-3 col-lg-2" type="back" @click="last_page()">Back</button>
                         </div>
                         <div v-if="this.$session.get('pro_status')=='make_pledge'">
-                            <button class="btn-sm btn btn-primary" type="button">Pledge</button>
-                            <button class="btn-sm btn btn-warning col-3" type="back" @click="last_page()">Back</button>
+                            <button class="btn-sm btn btn-primary col-3 col-lg-2" type="button" data-toggle="modal" data-target="#make_pledge_modal">Pledge</button>
+                            <button class="btn-sm btn btn-warning col-3 col-lg-2" type="back" @click="last_page()">Back</button>
                         </div>
 
 
@@ -303,7 +303,55 @@
                 </div>
             </div>
         </div>
+        <!-- make_pledge_modle -->
+        <div id="make_pledge_modal" class="modal fade" role="dialog">
+            <div class="modal-dialog" role="content">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Make Pledge</h4>
+                        <button type="button" class="close" data-dismiss="modal" @click="default_modify_rewards_modal()">
+                            &times;
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                                <div class="form-group row">
+                                    <label class="col-5 col-lg-3 col-form-label">Amount</label>
+                                    <div class="col-7 col-lg-7">
+                                        <input type="text" class="form-control" name="pledge_amount" placeholder="Amount" v-model="pledge_amount">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-5 col-lg-3 col-form-label">Card No.<span style="color:red">*</span></label>
+                                    <div class="col-7 col-lg-7">
+                                        <input type="text" class="form-control" name="reward_desc" placeholder="Card No." v-model="card_no">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-5 col-lg-3 col-form-label">Anonymous</label>
+                                    <div class="col-7 col-lg-7">
+                                        <select id="anonymous" name="anonymous" class="selectpicker selcls">
+                                            <option value=1>Yes</option>
+                                            <option value=0 selected>No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            <div class="form-group row">
+                                <label style="color:red" class="col">{{pledge_error_msg}}</label>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm" @click="make_pledge()">Pledge</button>
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" @click="default_make_pledge_modal()">Cancle</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 
 
 </template>
@@ -325,7 +373,10 @@
                 session_flag: this.$session.exists(),
                 reward_amount: [''],
                 reward_desc:[''],
-                error_msg:''
+                error_msg:'',
+                pledge_amount:0,
+                card_no:'',
+                pledge_error_msg:''
             }
         },
         mounted: function () {
@@ -428,6 +479,45 @@
             },
             last_page(){
                 this.$router.go(-1);
+            },
+            make_pledge(){
+                let ano_flag = $('#anonymous').val();
+                let ano=false;
+                if(ano_flag==1){
+                    ano=true;
+                }
+                if(this.card_no==''){
+                    this.pledge_error_msg='Card no cannot be empty';
+                }else{
+                let pledge_json =
+                    {
+                        "id": this.user_id,
+                        "amount": parseInt(this.pledge_amount),
+                        "anonymous": ano,
+                        "card": {
+                            "authToken": this.card_no
+                        }
+                    };
+                this.$http.post('http://localhost:4941/api/v2/projects/'+this.project_id+'/pledge',
+                    pledge_json,
+                    {
+                        headers:
+                            {
+                                'X-Authorization': this.$session.get('token')
+                            }
+                    }
+                ).then(function (res) {
+                    this.$router.go(0);
+                }, function (err) {
+                    this.pledge_error_msg='fault';
+                });
+                }
+            },
+            default_make_pledge_modal(){
+                this.pledge_amount=0;
+                this.card_no='';
+                this.pledge_error_msg='';
+                $('#anonymous').val(0);
             }
 
 
