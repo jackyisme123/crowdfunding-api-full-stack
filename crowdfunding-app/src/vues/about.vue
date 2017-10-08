@@ -9,10 +9,10 @@
             <div class="navbar-brand"><img src="../../src/img/logo-small.jpg" height="32" width="53"></div>
             <div class="collapse navbar-collapse" id="Navbar">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><router-link :to="{path: './'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
-                    <li class="nav-item active"><router-link :to="{path: './about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
-                    <li class="nav-item"><router-link :to="{path: './project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
-                    <li class="nav-item"><router-link :to="{path: './contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
+                    <li class="nav-item"><router-link :to="{path: '/'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
+                    <li class="nav-item active"><router-link :to="{path: '/about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
+                    <li class="nav-item"><router-link :to="{path: '/project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
+                    <li class="nav-item"><router-link :to="{path: '/contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
                 </ul>
                 <span class="navbar-text col-12 col-lg-2">
                     <a data-toggle="modal" data-target="#loginModal">
@@ -48,10 +48,10 @@
                     <div class="col-5 offset-1 col-lg-2">
                         <h5>Links</h5>
                         <ul class="list-unstyled">
-                            <li><router-link :to="{path: './'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
-                            <li><router-link :to="{path: './about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
-                            <li><router-link :to="{path: './project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
-                            <li><router-link :to="{path: './contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
+                            <li><router-link :to="{path: '/'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
+                            <li><router-link :to="{path: '/about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
+                            <li><router-link :to="{path: '/project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
+                            <li><router-link :to="{path: '/contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
 
                         </ul>
                     </div>

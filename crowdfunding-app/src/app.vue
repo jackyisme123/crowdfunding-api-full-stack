@@ -346,7 +346,7 @@
                             }
                         }).then(function (res) {
                             this.default_delete_user_modal();
-                            this.$router.push({path: './'});
+                            this.$router.push({path: '/'});
                             this.$session.destroy();
                             $("#delete_user_modal").modal('hide');
                     }, function (err) {

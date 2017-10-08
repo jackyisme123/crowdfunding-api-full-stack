@@ -9,10 +9,10 @@
             <div class="navbar-brand"><img src="../../src/img/logo-small.jpg" height="32" width="53"></div>
             <div class="collapse navbar-collapse" id="Navbar">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><router-link :to="{path: './'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
-                    <li class="nav-item"><router-link :to="{path: './about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
-                    <li class="nav-item active"><router-link :to="{path: './project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
-                    <li class="nav-item"><router-link :to="{path: './contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
+                    <li class="nav-item"><router-link :to="{path: '/'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
+                    <li class="nav-item"><router-link :to="{path: '/about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
+                    <li class="nav-item active"><router-link :to="{path: '/project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
+                    <li class="nav-item"><router-link :to="{path: '/contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
                 </ul>
                 <span class="navbar-text col-12 col-lg-2">
                     <a data-toggle="modal" data-target="#loginModal">
@@ -41,17 +41,65 @@
                 </div>
             </div>
         </header>
-    <div id="body">body</div>
+        <div class="body">
+            <br>
+            <div class="container">
+                <br>
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Project Summary</h3>
+                        <hr>
+                    </div>
+                </div>
+                <div class="row-content row">
+                    <div class="col-12 col-lg-10">
+                        <h2>Overview</h2>
+                        <div class="table-responsive table-striped">
+                            <table class="table text-center">
+                                <thead class="thead-inverse">
+                                <tr class="row">
+                                    <th class="text-center col-2 col-lg-2">ID</th>
+                                    <th class="text-center col-2 col-lg-2">Logo</th>
+                                    <th class="text-center col-3 col-lg-3">Title</th>
+                                    <th class="text-center col-3 col-lg-3">Subtitle</th>
+                                    <th class="text-center col-2 col-lg-2"></th>
+                                </tr>
+                                </thead>
+                                <tbody v-if="empty_flag==1" v-for="project in projects">
+                                <tr class="row">
+                                    <td class="col-2 col-lg-2">{{project.id}}</td>
+                                    <td class="col-2 col-lg-2">{{project.imageUri}}</td>
+                                    <td class="col-3 col-lg-3">{{project.title}}</td>
+                                    <td class="col-3 col-lg-3">{{project.subtitle}}</td>
+                                    <td class="col-2 col-lg-2"><button class="btn btn-secondary" type="button" @click="view_detail(project.id)">Detail</button></td>
+                                </tr>
+                                </tbody>
+                                <tbody v-if="empty_flag==0">
+                                <tr class="row">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><h2>Empty</h2></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <div id="footer" class="footer">
             <div class="container">
                 <div class="row">
                     <div class="col-5 offset-1 col-lg-2">
                         <h5>Links</h5>
                         <ul class="list-unstyled">
-                            <li><router-link :to="{path: './'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
-                            <li><router-link :to="{path: './about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
-                            <li><router-link :to="{path: './project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
-                            <li><router-link :to="{path: './contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
+                            <li><router-link :to="{path: '/'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
+                            <li><router-link :to="{path: '/about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
+                            <li><router-link :to="{path: '/project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
+                            <li><router-link :to="{path: '/contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
 
                         </ul>
                     </div>
@@ -86,3 +134,36 @@
         </div>
     </div>
 </template>
+
+<script>
+    export default{
+        data() {
+            return {
+                projects: [],
+                empty_flag: 0
+            }
+        },
+        mounted: function(){
+            this.get_all_projects();
+        },
+        methods: {
+            get_all_projects(){
+                this.$http.get('http://localhost:4941/api/v2/projects/')
+                    .then(function (res) {
+                    if(res.body.length==0){
+                        console.log(res.body.length);
+                        this.empty_flag=0;
+                    }else{
+                        console.log(res.body.length);
+                        this.empty_flag=1;
+                        this.projects=res.body;
+                    }
+                });
+            },
+            view_detail(pro_id) {
+                this.$router.push({path: '/project_detail/'+ pro_id});
+
+            }
+        }
+    }
+</script>

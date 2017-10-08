@@ -9,10 +9,10 @@
                     <div class="navbar-brand"><img src="../img/logo-small.jpg" height="32" width="53"></div>
                     <div class="collapse navbar-collapse" id="Navbar">
                         <ul class="navbar-nav mr-auto">
-                            <li class="nav-item"><router-link :to="{path: './login_home'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
-                            <li class="nav-item"><router-link :to="{path: './login_about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
-                            <li class="nav-item"><router-link :to="{path: './login_project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
-                            <li class="nav-item"><router-link :to="{path: './login_contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/login_home'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/login_about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/login_project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/login_contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
                         </ul>
                         <div class="dropdown">
                             <div class="navbar-text dropdown-toggle" id="user_menu" data-toggle="dropdown">
@@ -219,22 +219,22 @@
                     },
                 ).then(function(res){
                     this.$router.push({path: './'});
-                    this.$session.destory();
+                    this.$session.destroy();
                 }, function (err) {
                     console.log(err);
                 })
             },
             create_new() {
-                this.$router.push({path: './create_new'});
+                this.$router.push({path: '/create_new'});
             },
             my_project() {
-                this.$router.push({path: './my_project'});
+                this.$router.push({path: '/my_project'});
             },
             my_pledge() {
-                this.$router.push({path: './my_pledge'});
+                this.$router.push({path: '/my_pledge'});
             },
             my_profile() {
-                this.$router.push({path: './profile'});
+                this.$router.push({path: '/profile'});
             },
             default_create_new(){
                 this.pro_title= '';
@@ -288,7 +288,7 @@
                             }
                         }).then(function (res) {
                         this.default_create_new();
-                        this.$router.push({path:'./my_project'});
+                        this.$router.push({path:'/my_project'});
                     }, function (err) {
                         this.error_msg='Error';
                     })

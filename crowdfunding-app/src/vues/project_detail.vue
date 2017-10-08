@@ -9,11 +9,12 @@
                     <div class="navbar-brand"><img src="../img/logo-small.jpg" height="32" width="53"></div>
                     <div class="collapse navbar-collapse" id="Navbar">
                         <ul class="navbar-nav mr-auto">
-                            <li class="nav-item"><router-link :to="{path: './login_home'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
-                            <li class="nav-item"><router-link :to="{path: './login_about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
-                            <li class="nav-item"><router-link :to="{path: './login_project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
-                            <li class="nav-item"><router-link :to="{path: './login_contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/login_home'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/login_about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/login_project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/login_contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
                         </ul>
+                        <div v-if="session_flag">
                         <div class="dropdown">
                             <div class="navbar-text dropdown-toggle" id="user_menu" data-toggle="dropdown">
                                 &nbsp&nbsp&nbsp&nbsp<span class="fa fa-user fa-lg">&nbsp&nbsp{{login_username}}</span>
@@ -34,6 +35,19 @@
 
                             </ul>
 
+                        </div>
+                        </div>
+                        <div v-if="!session_flag">
+                            <span class="navbar-text col-12 col-lg-2">
+                            <a data-toggle="modal" data-target="#loginModal">
+                            <span class="fa fa-sign-in fa-lg"></span>
+                            <span> Log in</span></a>
+                            </span>
+                            <span class="navbar-text col-12 col-lg-2">
+                            <a data-toggle="modal" data-target="#signupModal">
+                            <span class="fa fa-user-plus fa-lg"></span>
+                            <span> Sign up</span></a>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -159,15 +173,20 @@
                     <hr>
                     <tfoot>
                         <div v-if="!session_flag">
-                            Login to create a new project or make a pledge
+                            Login to create a new project or make a pledge<br>
+                            <button class="btn-sm btn btn-warning col-3" type="back" @click="last_page()">Back</button>
                         </div>
                         <div v-if="this.$session.get('pro_status')=='my_project'">
-                            <button class="btn-sm btn btn-primary col-5 col-lg-2" type="button" data-toggle="modal" data-target="#modify_rewards_modal">Modify Rewards</button>
-                            <button class="btn-sm btn btn-warning col-5 col-lg-2" type="button" data-toggle="modal" data-target="#close_project_modal">Close Project</button>
+                            <button class="btn-sm btn btn-primary col-3 col-lg-2" type="button" data-toggle="modal" data-target="#modify_rewards_modal">Modify</button>
+                            <button class="btn-sm btn btn-danger col-3 col-lg-2" type="button" data-toggle="modal" data-target="#close_project_modal">Close</button>
+                            <button class="btn-sm btn btn-warning col-3" type="back" @click="last_page()">Back</button>
                         </div>
                         <div v-if="this.$session.get('pro_status')=='make_pledge'">
                             <button class="btn-sm btn btn-primary" type="button">Pledge</button>
+                            <button class="btn-sm btn btn-warning col-3" type="back" @click="last_page()">Back</button>
                         </div>
+
+
 
                     </tfoot>
 
@@ -183,10 +202,10 @@
                     <div class="col-5 offset-1 col-lg-2">
                         <h5>Links</h5>
                         <ul class="list-unstyled">
-                            <li><router-link :to="{path: './login_home'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
-                            <li><router-link :to="{path: './login_about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
-                            <li><router-link :to="{path: './login_project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
-                            <li><router-link :to="{path: './login_contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
+                            <li><router-link :to="{path: '/login_home'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
+                            <li><router-link :to="{path: '/login_about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
+                            <li><router-link :to="{path: '/login_project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
+                            <li><router-link :to="{path: '/login_contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
                         </ul>
                     </div>
                     <div class="col-6 col-lg-5">
@@ -325,8 +344,8 @@
 
                     },
                 ).then(function(res){
-                    this.$router.push({path: './'});
-                    this.$session.destory();
+                    this.$router.push({path: '/'});
+                    this.$session.destroy();
                 }, function (err) {
                     console.log(err);
                 })
@@ -406,6 +425,9 @@
                 }, function (err) {
                     this.error_msg='fault';
                 });
+            },
+            last_page(){
+                this.$router.go(-1);
             }
 
 
