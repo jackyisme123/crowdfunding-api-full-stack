@@ -80,8 +80,10 @@
                     <h5 style="font-family: 'Times New Roman';font-style: italic">&nbsp&nbsp&nbsp&nbspProject Logo</h5>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-8">Logo</div>
-                    <div class="col-lg col-4">change logo</div>
+                    <div class="col-lg-4 col-8"><img src="" class="img-fluid"></div>
+                    <div v-if="this.$session.get('pro_status')=='my_project'" class="col-lg col-4">
+                        <button class="btn-sm btn btn-primary" data-toggle="modal" data-target="#change_image_modal">Change Logo</button>
+                    </div>
                 </div>
 
                 <hr>
@@ -188,12 +190,7 @@
                         <div v-if="this.$session.get('pro_status')=='my_pledge'">
                             <button class="btn-sm btn btn-warning col-3 col-lg-2" type="back" @click="last_page()">Back</button>
                         </div>
-
-
-
                     </tfoot>
-
-
                 </table>
                 </div>
 
@@ -353,13 +350,33 @@
                 </div>
             </div>
         </div>
+        <!-- change_image_modle -->
+        <div class="modal fade" id="change_image_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Change Logo</h4>
+                        <button type="button" class="close" data-dismiss="modal" @click="">
+                            &times;
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <input id="change_logo" type="file" class="file">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <label style="color:red">{{image_error_msg}}</label>
+                        <button class="btn btn-sm btn-primary" @click="change_logo()">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
 
 </template>
-
-
 
 <script>
     export default {
@@ -379,11 +396,15 @@
                 error_msg:'',
                 pledge_amount:0,
                 card_no:'',
-                pledge_error_msg:''
+                pledge_error_msg:'',
+                image_error_msg:'',
+                file : null,
+                logo:null
             }
         },
         mounted: function () {
             this.get_project_detail();
+            this.get_logo();
         },
         methods: {
             log_out() {
@@ -521,9 +542,39 @@
                 this.card_no='';
                 this.pledge_error_msg='';
                 $('#anonymous').val(0);
+            },
+            change_logo(){
+                this.file = $(this.$el).find('#change_logo')[0].files[0];
+                if(this.file!=null){
+                this.$http.put('http://localhost:4941/api/v2/projects/'+this.project_id+'/image',
+                    this.file,
+                    {
+                        headers:
+                            {
+                                'Content-Type': 'image/png'||'image/jpeg',
+                                'X-Authorization': this.$session.get('token')
+                            }
+                    }
+                ).then(function (res) {
+                    this.file=null;
+                    this.$router.go(0);
+                }, function (err) {
+                    this.image_error_msg='file type must be PNG or JPEG';
+                    this.file=null;
+                });
+                }else{
+                    this.image_error_msg='please choose a file';
+                }
+            },
+            get_logo(){
+                this.$http.get('http://localhost:4941/api/v2/projects/'+this.project_id+'/image')
+                    .then(function (res) {
+                    });
             }
 
 
         }
     }
+
+
 </script>
