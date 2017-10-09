@@ -185,6 +185,9 @@
                             <button class="btn-sm btn btn-primary col-3 col-lg-2" type="button" data-toggle="modal" data-target="#make_pledge_modal">Pledge</button>
                             <button class="btn-sm btn btn-warning col-3 col-lg-2" type="back" @click="last_page()">Back</button>
                         </div>
+                        <div v-if="this.$session.get('pro_status')=='my_pledge'">
+                            <button class="btn-sm btn btn-warning col-3 col-lg-2" type="back" @click="last_page()">Back</button>
+                        </div>
 
 
 

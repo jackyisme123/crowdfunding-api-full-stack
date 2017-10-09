@@ -79,7 +79,7 @@
                                     <div class="offset-1 col-2" style="font-family: 'Times New Roman'; font-weight: bold">
                                         Id:
                                     </div>
-                                    <div class="offset-1 col">
+                                    <div class="offset-1 col" style="font-weight: bold">
                                         {{login_user_id}}
                                     </div>
                                 </div>
@@ -87,7 +87,7 @@
                                 <div class="offset-1 col-2" style="font-family: 'Times New Roman'; font-weight: bold">
                                     Name:
                                 </div>
-                                <div class="offset-1 col">
+                                <div class="offset-1 col" style="font-weight: bold">
                                     {{login_username}}
                                 </div>
                             </div>
@@ -95,7 +95,7 @@
                                 <div class="offset-1 col-2" style="font-family: 'Times New Roman'; font-weight: bold">
                                     Email:
                                 </div>
-                                <div class="offset-1 col">
+                                <div class="offset-1 col" style="font-weight: bold">
                                     {{login_user_email}}
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                                 <div class="offset-1 col-2" style="font-family: 'Times New Roman'; font-weight: bold">
                                     Address:
                                 </div>
-                                <div class="offset-1 col">
+                                <div class="offset-1 col" style="font-weight: bold">
                                     {{login_user_location}}
                                 </div>
                             </div>
@@ -122,9 +122,72 @@
                             <br>
                         </div>
                         <div role="tabpannel" class="tab-pane fade" id="my_project">
+                            <div class="table-responsive table-hover">
+                                <span style="font-family: 'Times New Roman';font-weight: bold;">Only first 5 projects showed</span>
+                                <br>
+                                <router-link :to="{path: '/my_project'}">View More</router-link>
+                                <table class="table text-center">
+                                    <thead class="thead-inverse">
+                                    <tr class="row">
+                                        <th class="text-center col-2 col-lg-3">ID</th>
+                                        <th class="text-center col-2 col-lg-3">Logo</th>
+                                        <th class="text-center col-4 col-lg-3">Title</th>
+                                        <th class="text-center col-4 col-lg-3">Subtitle</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody v-if="empty_flag1==1" v-for="project in my_projects">
+                                    <tr class="row">
+                                        <td class="col-2 col-lg-3">{{project.id}}</td>
+                                        <td class="col-2 col-lg-3">{{project.imageUri}}</td>
+                                        <td class="col-4 col-lg-3">{{project.title}}</td>
+                                        <td class="col-4 col-lg-3">{{project.subtitle}}</td>
+                                    </tr>
+                                    </tbody>
+                                    <tbody v-if="empty_flag1==0">
+                                    <tr class="row">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><h2>Empty</h2></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div role="tabpannel" class="tab-pane fade" id="my_pledge">
-
+                            <div class="table-responsive table-hover">
+                                <span style="font-family: 'Times New Roman';font-weight: bold;">Only first 5 pledges showed</span>
+                                <br>
+                                <router-link :to="{path: '/my_pledge'}">View More</router-link>
+                                <table class="table text-center">
+                                    <thead class="thead-inverse">
+                                    <tr class="row">
+                                        <th class="text-center col-2 col-lg-3">ID</th>
+                                        <th class="text-center col-2 col-lg-3">Logo</th>
+                                        <th class="text-center col-4 col-lg-3">Title</th>
+                                        <th class="text-center col-4 col-lg-3">Subtitle</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody v-if="empty_flag==1" v-for="project in my_pledges">
+                                        <tr class="row">
+                                        <td class="col-2 col-lg-3">{{project.id}}</td>
+                                            <td class="col-2 col-lg-3">{{project.imageUri}}</td>
+                                            <td class="col-4 col-lg-3">{{project.title}}</td>
+                                        <td class="col-4 col-lg-3">{{project.subtitle}}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody v-if="empty_flag==0">
+                                    <tr class="row">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><h2>Empty</h2></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                 </div>
                 <br>
@@ -140,7 +203,7 @@
                             <li><router-link :to="{path: '/login_home'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
                             <li><router-link :to="{path: '/lgoin_about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
                             <li><router-link :to="{path: '/login_project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
-                            <li><router-link :to="{path: '/longin_contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
+                            <li><router-link :to="{path: '/login_contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
 
                         </ul>
                     </div>
@@ -184,11 +247,17 @@
                 login_username:this.$session.get('username'),
                 login_user_id: '',
                 login_user_email: '',
-                login_user_location: ''
+                login_user_location: '',
+                my_pledges: [],
+                empty_flag: 0,
+                my_projects: [],
+                empty_flag1:0
             }
         },
         mounted: function () {
             this.get_login_user();
+            this.view_my_pledge();
+            this.view_my_project();
         },
         methods: {
             log_out() {
@@ -239,6 +308,29 @@
             },
             to_user_modify() {
                 this.$router.push({path: '/user_modify'})
+            },
+            view_my_pledge(){
+
+                this.$http.get('http://localhost:4941/api/v2/projects?count=5&open=true&backer='+this.$session.get('id'))
+                    .then(function (res) {
+                        if(res.body.length==0){
+                            this.empty_flag=0;
+                        }else{
+                            this.empty_flag=1;
+                            this.my_pledges=res.body;
+                        }
+                    })
+            },
+            view_my_project(){
+                this.$http.get('http://localhost:4941/api/v2/projects?count=5&open=true&creator='+this.$session.get('id'))
+                    .then(function (res) {
+                        if(res.body.length==0){
+                            this.empty_flag1=0;
+                        }else{
+                            this.empty_flag1=1;
+                            this.my_projects=res.body;
+                        }
+                    })
             }
 
         }

@@ -245,6 +245,7 @@
 
             },
             view_backer(pro_id) {
+                this.$session.set('pro_status', 'my_pledge');
                 this.$router.push({path: '/project_detail/'+ pro_id});
 
             },
