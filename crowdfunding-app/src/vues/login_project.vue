@@ -79,7 +79,7 @@
                                 <tbody v-if="empty_flag==1" v-for="project in projects">
                                 <tr class="row">
                                     <td class="col-2 col-lg-2">{{project.id}}</td>
-                                    <td class="col-2 col-lg-2">{{project.imageUri}}</td>
+                                    <td class="col-2 col-lg-2"><img :src="'http://localhost:4941/api/v2/'+project.imageUri" class="img-fluid" height="100" width="100"></td>
                                     <td class="col-3 col-lg-3">{{project.title}}</td>
                                     <td class="col-3 col-lg-3">{{project.subtitle}}</td>
                                     <div v-if="as_creator_id.indexOf(project.id)!=-1" class="col-2 col-lg-2">

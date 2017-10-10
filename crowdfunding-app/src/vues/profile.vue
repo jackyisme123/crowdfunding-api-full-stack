@@ -138,7 +138,7 @@
                                     <tbody v-if="empty_flag1==1" v-for="project in my_projects">
                                     <tr class="row">
                                         <td class="col-2 col-lg-3">{{project.id}}</td>
-                                        <td class="col-2 col-lg-3">{{project.imageUri}}</td>
+                                        <td class="col-2 col-lg-3"><img :src="'http://localhost:4941/api/v2/'+project.imageUri" class="img-fluid" height="100" width="100"></td>
                                         <td class="col-4 col-lg-3">{{project.title}}</td>
                                         <td class="col-4 col-lg-3">{{project.subtitle}}</td>
                                     </tr>
@@ -172,7 +172,7 @@
                                     <tbody v-if="empty_flag==1" v-for="project in my_pledges">
                                         <tr class="row">
                                         <td class="col-2 col-lg-3">{{project.id}}</td>
-                                            <td class="col-2 col-lg-3">{{project.imageUri}}</td>
+                                            <td class="col-2 col-lg-3"><img :src="'http://localhost:4941/api/v2/'+project.imageUri" class="img-fluid" height="100" width="100"></td>
                                             <td class="col-4 col-lg-3">{{project.title}}</td>
                                         <td class="col-4 col-lg-3">{{project.subtitle}}</td>
                                         </tr>

@@ -36,18 +36,16 @@
 
                         </div>
                         </div>
-                        <div v-if="!session_flag">
-                            <span class="navbar-text col-12 col-lg-2">
+                            <span class="navbar-text col-12 col-lg-2" v-if="!session_flag">
                             <a data-toggle="modal" data-target="#loginModal">
                             <span class="fa fa-sign-in fa-lg"></span>
                             <span> Log in</span></a>
                             </span>
-                            <span class="navbar-text col-12 col-lg-2">
+                            <span class="navbar-text col-12 col-lg-2" v-if="!session_flag">
                             <a data-toggle="modal" data-target="#signupModal">
                             <span class="fa fa-user-plus fa-lg"></span>
                             <span> Sign up</span></a>
                             </span>
-                        </div>
                     </div>
                 </div>
             </nav>
@@ -79,7 +77,7 @@
                     <h5 style="font-family: 'Times New Roman';font-style: italic">&nbsp&nbsp&nbsp&nbspProject Logo</h5>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-8"><img :src="'http://localhost:4941/api/v2/projects/'+project_id+'/image'" class="img-fluid" height="200" width="200"></div>
+                    <div class="col-lg-4 col-8"><img :src="'http://localhost:4941/api/v2/'+pro_detail.imageUri" height="200" width="200"></div>
                     <div v-if="this.$session.get('pro_status')=='my_project'" class="col-lg col-4">
                         <button class="btn-sm btn btn-primary" data-toggle="modal" data-target="#change_image_modal">Change Logo</button>
                     </div>
@@ -174,8 +172,8 @@
                     <hr>
                     <tfoot>
                         <div v-if="!session_flag">
-                            Login to create a new project or make a pledge<br>
-                            <button class="btn-sm btn btn-warning col-3" type="back" @click="last_page()">Back</button>
+                            <span>Login to create a new project or make a pledge</span><br><br>
+                            <button class="btn-sm btn btn-warning col-3 col-lg-2" type="back" @click="last_page()">Back</button>
                         </div>
                         <div v-if="this.$session.get('pro_status')=='my_project'">
                             <button class="btn-sm btn btn-primary col-3 col-lg-2" type="button" data-toggle="modal" data-target="#modify_rewards_modal">Modify</button>
