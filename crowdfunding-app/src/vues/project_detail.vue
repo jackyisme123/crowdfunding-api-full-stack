@@ -32,7 +32,6 @@
                                 <li role="presentation" class="menu-item" data-toggle="modal" data-target="#delete_user_modal"><a>Delete User</a></li>
                                 <li class="menu-item" style="color:#808080">---------------</li>
                                 <li role="presentation" class="menu-item" @click="log_out()"><a>Logout</a></li>
-
                             </ul>
 
                         </div>
@@ -80,7 +79,7 @@
                     <h5 style="font-family: 'Times New Roman';font-style: italic">&nbsp&nbsp&nbsp&nbspProject Logo</h5>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-8"><img src="" class="img-fluid"></div>
+                    <div class="col-lg-4 col-8"><img :src="'http://localhost:4941/api/v2/projects/'+project_id+'/image'" class="img-fluid" height="200" width="200"></div>
                     <div v-if="this.$session.get('pro_status')=='my_project'" class="col-lg col-4">
                         <button class="btn-sm btn btn-primary" data-toggle="modal" data-target="#change_image_modal">Change Logo</button>
                     </div>
@@ -404,7 +403,6 @@
         },
         mounted: function () {
             this.get_project_detail();
-            this.get_logo();
         },
         methods: {
             log_out() {
@@ -565,12 +563,15 @@
                 }else{
                     this.image_error_msg='please choose a file';
                 }
-            },
-            get_logo(){
-                this.$http.get('http://localhost:4941/api/v2/projects/'+this.project_id+'/image')
-                    .then(function (res) {
-                    });
             }
+//            get_logo(){
+//                this.$http.get('http://localhost:4941/api/v2/projects/'+this.project_id+'/image')
+//                    .then(function (res) {
+//                        let fr = new FileReader();
+//                        this.file=res.body;
+//                        this.logo=fr.readAsDataURL(this.file);
+//                    });
+//            }
 
 
         }

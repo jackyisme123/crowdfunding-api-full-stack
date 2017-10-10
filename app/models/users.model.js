@@ -125,7 +125,6 @@ const isLoggedIn = (id, done) => {
         'SELECT token FROM users WHERE id=? AND deleted=false',
         [id],
         (err, results) => {
-            console.log(results.length);
             if (results.length === 1 && results[0].token)
                 return done(true);
             return done(false);
@@ -169,7 +168,6 @@ const removeToken = (token, done) => {
  * @param done
  * @returns {*}
  */
-
 const getIdFromToken = (token, done) => {
     if (token === undefined || token === null)
         return done(true, null);
