@@ -94,15 +94,11 @@
                                     <td class="col-2 col-lg-2"><img :src="'http://localhost:4941/api/v2/'+project.imageUri" class="img-fluid" height="100" width="100"></td>
                                     <td class="col-3 col-lg-3">{{project.title}}</td>
                                     <td class="col-3 col-lg-3">{{project.subtitle}}</td>
-                                    <div v-if="as_creator_id.indexOf(project.id)!=-1" class="col-2 col-lg-2">
-                                        <td ><button class="btn btn-secondary" type="button" @click="view_creator(project.id)">creator</button></td>
-                                    </div>
-                                    <div v-else-if="as_backer_id.indexOf(project.id)!=-1" class="col-2 col-lg-2">
-                                        <td><button class="btn btn-secondary" type="button" @click="view_backer(project.id)">backer</button></td>
-                                    </div>
-                                    <div v-else="" class="col-2 col-lg-2">
-                                        <td><button class="btn btn-secondary" type="button" @click="view_pledge(project.id)">view</button></td>
-                                    </div>
+                                    <td class="col-2 col-lg-2 align-self-center" style="border: 1px solid transparent">
+                                        <button v-if="as_creator_id.indexOf(project.id)!=-1" class="btn btn-secondary" type="button" @click="view_creator(project.id)">creator</button>
+                                        <button v-else-if="as_backer_id.indexOf(project.id)!=-1" class="btn btn-secondary" type="button" @click="view_backer(project.id)">backer</button>
+                                        <button v-else="" class="btn btn-secondary" type="button" @click="view_pledge(project.id)">view</button>
+                                    </td>
                                 </tr>
                                 </tbody>
                                 <tbody v-if="empty_flag==0">

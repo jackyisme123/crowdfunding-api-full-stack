@@ -66,7 +66,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive table-striped">
+                        <div class="table-responsive table-hover">
                             <table class="table text-center">
                                 <thead class="thead-inverse">
                                 <tr class="row">
@@ -83,7 +83,7 @@
                                     <td class="col-2 col-lg-2"><img :src="'http://localhost:4941/api/v2/'+project.imageUri" class="img-fluid" height="100" width="100"></td>
                                     <td class="col-3 col-lg-3">{{project.title}}</td>
                                     <td class="col-3 col-lg-3">{{project.subtitle}}</td>
-                                    <td class="col-2 col-lg-2"><button class="btn btn-secondary" type="button" @click="view_detail(project.id)">Detail</button></td>
+                                    <td class="col-2 col-lg-2 align-self-center" style="border: 1px solid transparent"><button class="btn btn-secondary" type="button" @click="view_detail(project.id)">Detail</button></td>
                                 </tr>
                                 </tbody>
                                 <tbody v-if="empty_flag==0">
