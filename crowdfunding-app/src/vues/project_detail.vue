@@ -76,13 +76,16 @@
                 <div class="row">
                     <h5 style="font-family: 'Times New Roman';font-style: italic">&nbsp&nbsp&nbsp&nbspProject Logo</h5>
                 </div>
+                <br>
                 <div class="row">
-                    <div class="col-lg-4 col-8"><img :src="'http://localhost:4941/api/v2/'+pro_detail.imageUri" height="200" width="200"></div>
-                    <div v-if="this.$session.get('pro_status')=='my_project'" class="col-lg col-4">
+                    <div class="col-lg-4 col-8"><img :src="'http://localhost:4941/api/v2/'+pro_detail.imageUri" height="200" width="200" onerror="javascript:this.src='/src/img/default.png'; this.onerror=null;">
+                        <br><br>
+                    </div>
+                    <div v-if="this.$session.get('pro_status')=='my_project'" class="col-lg-12 col-12">
                         <button class="btn-sm btn btn-primary" data-toggle="modal" data-target="#change_image_modal">Change Logo</button>
                     </div>
                 </div>
-
+                <br>
                 <hr>
                 <div class="table-responsive table-striped">
                 <table class="table">
@@ -155,10 +158,11 @@
                     <thead>
                     <tr class="row">
                         <h5 style="font-family: 'Times New Roman';font-style: italic">&nbsp&nbsp&nbsp&nbspBackers Detail</h5>
+                        <h6 style="font-family: 'Times New Roman'">&nbsp&nbsp&nbsp&nbsp(Only show latest 5 backers)</h6>
                     </tr>
                     </thead>
                     <tbody>
-                    <div v-for="backer in pro_detail.backers">
+                    <div v-for="backer in backers">
                     <tr class="row">
                         <th class="col-6 col-lg-5 text-center">Username</th>
                         <td class="col-6 col-lg-5">{{backer.username}}</td>
@@ -358,8 +362,12 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                            <div>
+                            <img alt="Image Preview" id="previewer" :src="dataUrl">
+                        </div>
                         <div>
-                            <input id="change_logo" type="file" class="file">
+                            <br>
+                            <input id="change_logo" type="file" class="file" @change="handleFileChange()">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -396,7 +404,9 @@
                 pledge_error_msg:'',
                 image_error_msg:'',
                 file : null,
-                logo:null
+                logo:null,
+                dataUrl:'',
+                backers:[]
             }
         },
         mounted: function () {
@@ -439,6 +449,13 @@
                         this.pro_detail=res.body;
                         var timestamp = this.pro_detail.creationDate;
                         this.newDate.setTime(timestamp);
+                        if(this.pro_detail.length!=0){
+                            for(let i in this.pro_detail.backers){
+                                if(i>this.pro_detail.backers.length-6){
+                                    this.backers.push(this.pro_detail.backers[i]);
+                                }
+                            }
+                        }
                     });
             },
             close_project(){
@@ -527,6 +544,7 @@
                             }
                     }
                 ).then(function (res) {
+                    this.$session.set('pro_status','my_pledge');
                     this.$router.go(0);
                 }, function (err) {
                     this.pledge_error_msg='fault';
@@ -540,40 +558,67 @@
                 $('#anonymous').val(0);
             },
             change_logo(){
-                this.file = $(this.$el).find('#change_logo')[0].files[0];
-                if(this.file!=null){
-                this.$http.put('http://localhost:4941/api/v2/projects/'+this.project_id+'/image',
-                    this.file,
-                    {
-                        headers:
+                    if(this.file==null){
+                        this.image_error_msg='please choose a file';
+                    }else if(this.file.type!="image/png"&&this.file.type!="image/jpeg"){
+                        this.image_error_msg='file type must be PNG or JPEG';
+                        this.file=null;
+                    }else{
+                        this.$http.put('http://localhost:4941/api/v2/projects/'+this.project_id+'/image',
+                            this.file,
                             {
-                                'Content-Type': 'image/png'||'image/jpeg',
-                                'X-Authorization': this.$session.get('token')
+                                headers:
+                                    {
+                                        'Content-Type': 'image/png'||'image/jpeg',
+                                        'X-Authorization': this.$session.get('token')
+                                    }
                             }
+                        ).then(function (res) {
+                            this.file=null;
+                            this.$router.go(0);
+                        });
                     }
-                ).then(function (res) {
-                    this.file=null;
-                    this.$router.go(0);
-                }, function (err) {
-                    this.image_error_msg='file type must be PNG or JPEG';
-                    this.file=null;
-                });
+
+                },
+            img_preview(file){
+                let self = this;
+                this.image_error_msg='';
+                if(file.type=="image/png" || file.type=="image/jpeg"){
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function () {
+                        self.dataUrl = this.result;
+                    }
                 }else{
-                    this.image_error_msg='please choose a file';
+                    this.image_error_msg='file type must be PNG or JPEG';
                 }
+            },
+            handleFileChange(e){
+                this.file = $(this.$el).find('#change_logo')[0].files[0];
+                this.img_preview(this.file);
             }
-//            get_logo(){
-//                this.$http.get('http://localhost:4941/api/v2/projects/'+this.project_id+'/image')
-//                    .then(function (res) {
-//                        let fr = new FileReader();
-//                        this.file=res.body;
-//                        this.logo=fr.readAsDataURL(this.file);
-//                    });
-//            }
 
 
-        }
+            }
+
+
     }
+//        var filechooser = document.getElementById('change_logo');
+//        var previewer = document.getElementById('previewer');
+//        filechooser.onchange = function () {
+//            var file = this.files[0];
+//            if(file.type!="image/png"&&file.type!="image/jpeg"){
+//                return;
+//            }else{
+//                var reader = new FileReader();
+//                reader.onloadend = function () {
+//                    previewer.src = this.result;
+//                }
+//                reader.readAsDataURL(file);
+//            }
+//        }
+
+
 
 
 </script>

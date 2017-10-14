@@ -123,7 +123,7 @@
                         </div>
                         <div role="tabpannel" class="tab-pane fade" id="my_project">
                             <div class="table-responsive table-hover">
-                                <span style="font-family: 'Times New Roman';font-weight: bold;">Only first 5 projects showed</span>
+                                <span style="font-family: 'Times New Roman';font-weight: bold;">Only Latest 5 projects showed</span>
                                 <br>
                                 <router-link :to="{path: '/my_project'}">View More</router-link>
                                 <table class="table text-center">
@@ -138,7 +138,7 @@
                                     <tbody v-if="empty_flag1==1" v-for="project in my_projects">
                                     <tr class="row">
                                         <td class="col-2 col-lg-3">{{project.id}}</td>
-                                        <td class="col-2 col-lg-3"><img :src="'http://localhost:4941/api/v2/'+project.imageUri" class="img-fluid" height="100" width="100"></td>
+                                        <td class="col-2 col-lg-3"><img :src="'http://localhost:4941/api/v2/'+project.imageUri" class="img-fluid" height="100" width="100" onerror="javascript:this.src='/src/img/default.png'; this.onerror=null;"></td>
                                         <td class="col-4 col-lg-3">{{project.title}}</td>
                                         <td class="col-4 col-lg-3">{{project.subtitle}}</td>
                                     </tr>
@@ -157,7 +157,7 @@
                         </div>
                         <div role="tabpannel" class="tab-pane fade" id="my_pledge">
                             <div class="table-responsive table-hover">
-                                <span style="font-family: 'Times New Roman';font-weight: bold;">Only first 5 pledges showed</span>
+                                <span style="font-family: 'Times New Roman';font-weight: bold;">Only Latest 5 pledges showed</span>
                                 <br>
                                 <router-link :to="{path: '/my_pledge'}">View More</router-link>
                                 <table class="table text-center">
@@ -172,7 +172,7 @@
                                     <tbody v-if="empty_flag==1" v-for="project in my_pledges">
                                         <tr class="row">
                                         <td class="col-2 col-lg-3">{{project.id}}</td>
-                                            <td class="col-2 col-lg-3"><img :src="'http://localhost:4941/api/v2/'+project.imageUri" class="img-fluid" height="100" width="100"></td>
+                                            <td class="col-2 col-lg-3"><img :src="'http://localhost:4941/api/v2/'+project.imageUri" class="img-fluid" height="100" width="100" onerror="javascript:this.src='/src/img/default.png'; this.onerror=null;"></td>
                                             <td class="col-4 col-lg-3">{{project.title}}</td>
                                         <td class="col-4 col-lg-3">{{project.subtitle}}</td>
                                         </tr>

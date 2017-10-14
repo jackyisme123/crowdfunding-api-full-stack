@@ -16,9 +16,11 @@ import LoginProject from './vues/login_project.vue'
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 import VueSession from 'vue-session';
+import VueInstant from '../node_modules/vue-instant/dist/vue-instant.common.js';
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(VueSession);
+Vue.use(VueInstant);
 // Vue.http.options.emulateJSON = true;
 
 const routes = [

@@ -11,7 +11,7 @@
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item"><router-link :to="{path: '/login_home'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
                             <li class="nav-item"><router-link :to="{path: '/login_about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
-                            <li class="nav-item"><router-link :to="{path: '/login_project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
+                            <li class="nav-item active"><router-link :to="{path: '/login_project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
                             <li class="nav-item"><router-link :to="{path: '/login_contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
                         </ul>
                         <div class="dropdown">
@@ -65,6 +65,18 @@
                 <div class="row-content row">
                     <div class="col-12 col-lg-10">
                         <h2>Overview</h2>
+                        <div class="row pull-right" style="background-color: rgb(255,255,255); padding:10px;">
+                            <div>
+                                <div class="main">
+                                    <form class="search-box sbx-twitter">
+                                        <div role="search" class="sbx-twitter__wrapper">
+                                            <input type="search" name="vueInstant" placeholder="Enter Keyword(s)" class="sbx-twitter__input" v-model="search">
+                                            <button type="button" class="sbx-twitter__submit" ><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive table-hover">
                             <table class="table text-center">
                                 <thead class="thead-inverse">
@@ -77,7 +89,7 @@
                                 </tr>
                                 </thead>
                                 <tbody v-if="empty_flag==1" v-for="project in projects">
-                                <tr class="row">
+                                <tr class="row" v-if="project.title.toLowerCase().indexOf(search.toLowerCase())!=-1||project.subtitle.toLowerCase().indexOf(search.toLowerCase())!=-1||search==''">
                                     <td class="col-2 col-lg-2">{{project.id}}</td>
                                     <td class="col-2 col-lg-2"><img :src="'http://localhost:4941/api/v2/'+project.imageUri" class="img-fluid" height="100" width="100"></td>
                                     <td class="col-3 col-lg-3">{{project.title}}</td>
@@ -166,7 +178,8 @@
                 as_creator_projects:[],
                 as_creator_id:[],
                 as_backer_projects:[],
-                as_backer_id:[]
+                as_backer_id:[],
+                search:''
             }
         },
         mounted: function () {

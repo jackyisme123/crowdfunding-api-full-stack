@@ -286,9 +286,10 @@
                             headers: {
                                 'X-Authorization': this.$session.get('token')
                             }
-                        }).then(function (res) {
-                        this.default_create_new();
-                        this.$router.push({path:'/my_project'});
+                        })
+                        .then(function (res) {
+                            this.default_create_new();
+                            this.$router.push({path:'/my_project'});
                     }, function (err) {
                         this.error_msg='Error';
                     })
