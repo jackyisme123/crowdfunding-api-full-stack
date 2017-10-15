@@ -12,7 +12,7 @@
                             <li class="nav-item"><router-link :to="{path: '/login_home'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
                             <li class="nav-item"><router-link :to="{path: '/login_about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
                             <li class="nav-item"><router-link :to="{path: '/login_project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
-                            <li class="nav-item"><router-link :to="{path: '/login_contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
+                            <li class="nav-item active"><router-link :to="{path: '/login_contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
                         </ul>
                         <div class="dropdown">
                             <div class="navbar-text dropdown-toggle" id="user_menu" data-toggle="dropdown">
@@ -52,53 +52,117 @@
                 </div>
             </div>
         </header>
-        <div class="body">
+        <div id="body">
             <br>
             <div class="container">
                 <br>
                 <div class="row">
                     <div class="col-12">
-                        <h3>My Pledge</h3>
+                        <h3>Contact</h3>
                         <hr>
                     </div>
                 </div>
-                <div class="row-content row">
-                    <div class="col-12 col-lg-10">
-                        <h2>Overview</h2>
-                        <div class="table-responsive table-hover">
-                            <table class="table text-center">
-                                <thead class="thead-inverse">
-                                <tr class="row">
-                                    <th class="text-center col-2 col-lg-2">ID</th>
-                                    <th class="text-center col-2 col-lg-2">Logo</th>
-                                    <th class="text-center col-3 col-lg-3">Title</th>
-                                    <th class="text-center col-3 col-lg-3">Subtitle</th>
-                                    <th class="text-center col-2 col-lg-2"></th>
-                                </tr>
-                                </thead>
-                                <tbody v-if="empty_flag==1" v-for="project in my_pledges">
-                                <tr class="row">
-                                    <td class="col-2 col-lg-2">{{project.id}}</td>
-                                    <td class="col-2 col-lg-2"><img :src="'http://localhost:4941/api/v2/'+project.imageUri" class="img-fluid" height="100" width="100" onerror="javascript:this.src='/src/img/default.png'; this.onerror=null;"></td>
-                                    <td class="col-3 col-lg-3">{{project.title}}</td>
-                                    <td class="col-3 col-lg-3">{{project.subtitle}}</td>
-                                    <td class="col-2 col-lg-2 align-self-center" style="border: 1px solid transparent"><button class="btn btn-secondary" type="button" @click="view_detail(project.id)">Detail</button></td>
-                                </tr>
-                                </tbody>
-                                <tbody v-if="empty_flag==0">
-                                <tr class="row">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><h2>Empty</h2></td>
-                                </tr>
-                                </tbody>
-                            </table>
+                <div class="row row-content">
+                    <div class="col-12">
+                        <h3>Location Information</h3>
+                        <br>
+                    </div>
+                    <div class="col-12 col-sm-4 offset-sm-1">
+                        <h5>Our Address</h5>
+                        <address style="font-size: 100%">
+                            University of Canterbury<br>
+                            Private Bag 4800, Christchurch 8140<br>
+                            New Zealand<br>
+                            <i class="fa fa-phone"></i>: +64 1234 5678<br>
+                            <i class="fa fa-fax"></i>: +64 8765 4321<br>
+                            <i class="fa fa-envelope"></i>:
+                            <a href="mailto:ycu20@uclive.ac.nz">ycu20@uclive.ac.nz</a>
+                            <br>
+                            <br>
+                        </address>
+                        <div class="btn-group" role="group">
+                            <a role="button" class="btn btn-primary" href="tel:+85212345678"><i class="fa fa-phone"></i> Call</a>
+                            <a role="button" class="btn btn-info"><i class="fa fa-skype"></i> Skype</a>
+                            <a role="button" class="btn btn-success" href="mailto:confusion@food.net"><i class="fa fa-envelope-o"></i> Email</a>
                         </div>
                     </div>
+                    <div class="col-12 col-sm-6 offset-sm-1">
+                        <div id="map" style="width:400px;height:250px;">
 
+                        </div>
+                    </div>
                 </div>
+
+                <div class="row row-content">
+                    <div class="col-12">
+                        <h3>Send us your Feedback</h3>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <form>
+                            <div class="form-group row">
+                                <label for="firstname" class="col-md-2 col-form-label">First Name</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="lastname" class="col-md-2 col-form-label">Last Name</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="telnum" class="col-md-2 col-form-label">Contact. Tel</label>
+                                <div class="col-5 col-sm-4 col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">(</div>
+                                        <input type="tel" class="form-control" id="areacode" name="areacode" placeholder="Area Code">
+                                        <div class="input-group-addon">)</div>
+                                    </div>
+                                </div>
+                                <div class="col-7 col-sm-6 col-md-7">
+                                    <input type="tel" class="form-control" id="telnum" name="telnum" placeholder="Tel. number">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="emailid" class="col-md-2 col-form-label">Email</label>
+                                <div class="col-md-10">
+                                    <input type="email" class="form-control" id="emailid" name="emailid" placeholder="Email">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="form-ckeck col-md-6 offset-md-2">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="approve" value="">
+                                        <strong>May we contact you?</strong>
+                                    </label>
+                                </div>
+                                <div class="md-3 offset-md-1">
+                                    <select class="form-control">
+                                        <option>Tel.</option>
+                                        <option>Email</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="feedback" class="col-md-2 col-form-label">Your Feedback</label>
+                                <div class="col-md-10">
+                                    <textarea type="email" class="form-control" id="feedback" name="feedback" rows="12"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="offset-md-2 col-md-10">
+                                    <button type="submit" class="btn btn-primary">
+                                        Send FeedBack
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12 col-md">
+                    </div>
+                </div>
+
             </div>
         </div>
         <div id="footer" class="footer">
@@ -152,13 +216,11 @@
             return {
                 user_id:this.$session.get('id'),
                 login_username:this.$session.get('username'),
-                session_token: this.$session.get('token'),
-                my_pledges: [],
-                empty_flag: 0
+                session_token: this.$session.get('token')
             }
         },
         mounted: function () {
-            this.view_my_project();
+            this.myMap();
         },
         methods: {
             log_out() {
@@ -191,21 +253,16 @@
             my_profile() {
                 this.$router.push({path: '/profile'});
             },
-            view_my_project(){
-                this.$http.get('http://localhost:4941/api/v2/projects?open=true&backer='+this.user_id)
-                    .then(function (res) {
-                        if(res.body.length==0){
-                            this.empty_flag=0;
-                        }else{
-                            this.empty_flag=1;
-                            this.my_pledges=res.body;
-                        }
-                    })
-            },
-            view_detail(pro_id) {
-                this.$session.set('pro_status', 'my_pledge');
-                this.$router.push({path: '/project_detail/'+ pro_id});
-
+            myMap() {
+                var uluru = {lat: -43.523, lng: 172.584};
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 12,
+                    center: uluru
+                });
+                var marker = new google.maps.Marker({
+                    position: uluru,
+                    map: map
+                });
             }
 
 

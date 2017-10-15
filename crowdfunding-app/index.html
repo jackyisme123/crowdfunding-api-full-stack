@@ -18,13 +18,27 @@
     <div id="app">
 
     </div>
-
+    <script>
+        function myMap() {
+            var uluru = {lat: -43.523, lng: 172.584};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: uluru
+            });
+            var marker = new google.maps.Marker({
+                position: uluru,
+                map: map
+            });
+        }
+    </script>
     <script src="/dist/build.js"></script>
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/tether/dist/js/tether.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/node_modules/vue-instant/dist/vue-instant.browser.js"></script>
-    <!--<script src="/node_modules/bootstrap-fileinput/js/fileinput.min.js"></script>-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRiHCbajPFdgSOmMOe2FMnYf9l6w2P_O8&callback=myMap"></script>
+
   </body>
+
 </html>

@@ -9,21 +9,32 @@
                     <div class="navbar-brand"><img src="../img/logo-small.jpg" height="32" width="53"></div>
                     <div class="collapse navbar-collapse" id="Navbar">
                         <ul class="navbar-nav mr-auto">
-                            <li class="nav-item"><router-link :to="{path: '/'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
-                            <li class="nav-item active"><router-link :to="{path: '/about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
-                            <li class="nav-item"><router-link :to="{path: '/project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
-                            <li class="nav-item"><router-link :to="{path: '/contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/login_home'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
+                            <li class="nav-item active"><router-link :to="{path: '/login_about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/login_project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/login_contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
                         </ul>
-                        <span class="navbar-text col-12 col-lg-2">
-                    <a data-toggle="modal" data-target="#loginModal">
-                    <span class="fa fa-sign-in fa-lg"></span>
-                    <span> Log in</span></a>
-                </span>
-                        <span class="navbar-text col-12 col-lg-2">
-                    <a data-toggle="modal" data-target="#signupModal">
-                    <span class="fa fa-user-plus fa-lg"></span>
-                    <span> Sign up</span></a>
-                </span>
+                        <div class="dropdown">
+                            <div class="navbar-text dropdown-toggle" id="user_menu" data-toggle="dropdown">
+                                &nbsp&nbsp&nbsp&nbsp<span class="fa fa-user fa-lg">&nbsp&nbsp{{login_username}}</span>
+                                <b class="caret"></b>
+                            </div>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="user_menu">
+                                <li class="dropdown-header">Project</li>
+                                <li role="presentation" class="menu-item" @click="create_new()"><a>Create New</a></li>
+                                <li role="presentation" class="menu-item" @click="my_project()"><a>My Project</a></li>
+                                <li role="presentation" class="menu-item" @click="my_pledge()"><a>My Pledge</a></li>
+                                <li class="menu-item" style="color:#808080">---------------</li>
+                                <li class="dropdown-header">Setting</li>
+                                <li role="presentation" class="menu-item" @click="my_profile()"><a>My Profile</a></li>
+                                <li role="presentation" class="menu-item" @click="modify_user()"><a>Modify User</a></li>
+                                <li role="presentation" class="menu-item" data-toggle="modal" data-target="#delete_user_modal"><a>Delete User</a></li>
+                                <li class="menu-item" style="color:#808080">---------------</li>
+                                <li role="presentation" class="menu-item" @click="log_out()"><a>Logout</a></li>
+
+                            </ul>
+
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -131,11 +142,10 @@
                     <div class="col-5 offset-1 col-lg-2">
                         <h5>Links</h5>
                         <ul class="list-unstyled">
-                            <li><router-link :to="{path: '/'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
-                            <li><router-link :to="{path: '/about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
-                            <li><router-link :to="{path: '/project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
-                            <li><router-link :to="{path: '/contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
-
+                            <li><router-link :to="{path: '/login_home'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
+                            <li><router-link :to="{path: '/login_about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
+                            <li><router-link :to="{path: '/login_project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
+                            <li><router-link :to="{path: '/login_contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
                         </ul>
                     </div>
                     <div class="col-6 col-lg-5">
@@ -170,3 +180,51 @@
     </div>
 
 </template>
+
+<script>
+    export default {
+        data() {
+            return {
+                user_id:this.$session.get('id'),
+                login_username:this.$session.get('username'),
+                session_token: this.$session.get('token')
+            }
+        },
+        mounted: function () {
+        },
+        methods: {
+            log_out() {
+//                console.log(this.$session.get('token'));
+                this.$http.post('http://localhost:4941/api/v2/users/logout/',
+                    {},
+                    {
+                        headers:
+                            {
+                                'X-Authorization': this.$session.get('token')
+                            },
+
+                    },
+                ).then(function(res){
+                    this.$router.push({path: '/'});
+                    this.$session.destroy();
+                }, function (err) {
+                    console.log(err);
+                })
+            },
+            create_new() {
+                this.$router.push({path: '/create_new'});
+            },
+            my_project() {
+                this.$router.push({path: '/my_project'});
+            },
+            my_pledge() {
+                this.$router.push({path: '/my_pledge'});
+            },
+            my_profile() {
+                this.$router.push({path: '/profile'});
+            }
+
+
+        }
+    }
+</script>

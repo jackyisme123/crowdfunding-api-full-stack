@@ -116,11 +116,11 @@
                     <div class="col-6 col-lg-5">
                         <h5>Post Address</h5>
                         <address>
-                            University of Canterbury
-                            Private Bag 4800, Christchurch 8140
+                            University of Canterbury<br>
+                            Private Bag 4800, Christchurch 8140<br>
                             New Zealand<br>
-                            <i class="fa fa-phone fa-lg"></i> +852 1234 5678<br>
-                            <i class="fa fa-fax"></i> +852 8765 4321<br>
+                            <i class="fa fa-phone fa-lg"></i> +64 1234 5678<br>
+                            <i class="fa fa-fax"></i> +64 8765 4321<br>
                             <i class="fa fa-envelope"></i> <a href="mailto:ycu20@uclive.ac.nz">ycu20@uclive.ac.nz</a>
                         </address>
                     </div>

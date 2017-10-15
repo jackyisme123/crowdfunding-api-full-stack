@@ -11,7 +11,8 @@ import MyPledge from './vues/my_pledge.vue'
 import UserModify from './vues/user_modify.vue'
 import ProjectDetail from './vues/project_detail.vue'
 import LoginProject from './vues/login_project.vue'
-
+import LoginContact from './vues/login_contact.vue'
+import LoginAbout from './vues/login_about.vue'
 
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
@@ -67,6 +68,14 @@ const routes = [
     {
         path: "/login_project",
         component: LoginProject
+    },
+    {
+        path: "/login_contact",
+        component: LoginContact
+    },
+    {
+        path: "/login_about",
+        component: LoginAbout
     }
 ];
 
