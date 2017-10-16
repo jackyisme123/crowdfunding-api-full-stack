@@ -41,7 +41,81 @@
                 </div>
             </div>
         </header>
-        <div id="body">body</div>
+
+        <div id="body">
+            <br>
+            <div class="container">
+                <div class="row-content row">
+                    <div class="col">
+                        <div id="mycarousel" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                <li data-target="#mycarousel" data-slide-to="0" class="active"></li>
+                                <li data-target="#mycarousel" data-slide-to="1"></li>
+                                <li data-target="#mycarousel" data-slide-to="2"></li>
+                            </ol>
+                            <div class="carousel-inner" role="listbox">
+                                <div class="carousel-item active">
+                                    <img class="d-block img-fluid" src="/src/img/help.jpg" alt="First slide">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h2>Dream Big</h2>
+                                        <p class="hidden-xs-down">
+                                            The Dream Fund is always highly competitive and the bar is set very high for what makes a successful applicant. We recognize that producing transformative projects is a difficult and time consuming process and we want to support applicants through the process of developing their ideas. </p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block img-fluid" src="/src/img/dream.jpg" alt="Second slide">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h2>Our Dream</h2>
+                                        <p class="hidden-xs-down">
+                                            No matter how creative we are, it’s impossible to know where our life stories will take us. Amidst the dreams we chase and the plans we make, there are inevitable hiccups. Sometimes, those hiccups are too big of burden to bear alone. But that doesn’t mean that those stories can’t have a happy ending. </p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block img-fluid" src="/src/img/mountain.jpg" alt="Third slide">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h2>Dream Support</h2>
+                                        <p class="hidden-xs-down">
+                                            Dream funding has hosted thousands of creative, civic and entrepreneurial projects from around the world and recently expanded to include young entrepreneurs ages 13 to 17 through partnerships with student organizations. </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <a class="carousel-control-prev" href="#mycarousel" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#mycarousel" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-content row">
+                    <div class="col-12">
+                        <h2>What's New</h2>
+                        <br>
+                    </div>
+
+                        <div class="img_wrapper col-12 offset-lg-1 col-lg-3" v-for="project in new_projects" @click="view_detail(project.id)">
+                            <div class="col-12">
+                                <img :src="'http://localhost:4941/api/v2/'+project.imageUri" height="250" width="250" onerror="javascript:this.src='/src/img/default.png'; this.onerror=null;">
+                            </div>
+                            <div class="col-12 text-right" style="font-family: 'Times New Roman';font-size: 0.9em;color:black;">
+                                <p>By&nbsp{{project.creators[0].username}}</p>
+                            </div>
+                            <h3 class="col-12">
+                                {{project.title}}
+                            </h3>
+                            <p class="col-12" style="font-family: Arial;font-style: italic;font-size: 1.2em;">
+                                {{project.subtitle}}
+                            </p>
+                        </div>
+
+                </div>
+                <hr>
+            </div>
+        </div>
         <div id="footer" class="footer">
             <div class="container">
                 <div class="row">
@@ -87,3 +161,59 @@
     </div>
 
 </template>
+
+<script>
+    export default{
+        data() {
+            return {
+                empty_flag:0,
+                new_projects:[]
+            }
+        },
+        mounted: function(){
+            this.default();
+            this.get_all_projects();
+        },
+        methods: {
+            default(){
+                $('[data-toggle="tooltip"]').tooltip();
+                $("#mycarousel").carousel({interval:5000});
+
+            },
+            get_all_projects(){
+                this.$http.get('http://localhost:4941/api/v2/projects?open=true')
+                    .then(function (res) {
+                        if(res.body.length==0){
+                            this.empty_flag=0;
+                        }else{
+                            this.empty_flag=1;
+                            let projects=res.body;
+                            let pro_ids= [];
+                            if(projects.length>3){
+                                pro_ids.push(projects[projects.length-1].id);
+                                pro_ids.push(projects[projects.length-2].id);
+                                pro_ids.push(projects[projects.length-3].id);
+                            }else{
+                                for(let pro of projects){
+                                    pro_ids.push(pro.id);
+                                }
+                            }
+                            if(pro_ids.length!=0){
+                                for(let id of pro_ids){
+                                this.$http.get('http://localhost:4941/api/v2/projects/'+id)
+                                    .then(function (res1) {
+                                        this.new_projects.push(res1.body);
+                                    });
+                                }
+
+                            }
+                        }
+                    });
+            },
+            view_detail(pro_id){
+                this.$router.push({path: '/project_detail/'+ pro_id});
+            }
+
+        }
+    }
+</script>
