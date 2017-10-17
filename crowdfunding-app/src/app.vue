@@ -296,6 +296,7 @@
                                     this.$session.set('id', res.body.id);
                                     this.$session.set('token', res.body.token);
                                     this.default_login_modal();
+                                    this.$router.islogin=true;
                                     this.$router.push({path: '/profile'});
                                 }
                             });
@@ -320,6 +321,7 @@
 //                            Vue.http.headers.common['X-Authorization']=res.body.token;
                             $("#loginModal").modal('hide');
                             this.default_login_modal();
+                            this.$router.islogin=true;
                             this.$router.push({path: '/profile'});
                         }
                     }, function (error) {
@@ -346,6 +348,7 @@
                             }
                         }).then(function (res) {
                             this.default_delete_user_modal();
+                            this.$router.islogin=false;
                             this.$router.push({path: '/'});
                             this.$session.destroy();
                             $("#delete_user_modal").modal('hide');

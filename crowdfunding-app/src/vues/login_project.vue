@@ -9,7 +9,7 @@
                     <div class="navbar-brand"><img src="../img/logo-small.jpg" height="32" width="53"></div>
                     <div class="collapse navbar-collapse" id="Navbar">
                         <ul class="navbar-nav mr-auto">
-                            <li class="nav-item"><router-link :to="{path: '/login_home'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/create_new'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-compass fa-lg"></span>&nbspStart</router-link></li>
                             <li class="nav-item"><router-link :to="{path: '/login_about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
                             <li class="nav-item active"><router-link :to="{path: '/login_project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
                             <li class="nav-item"><router-link :to="{path: '/login_contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
@@ -91,13 +91,13 @@
                                 <tbody v-if="empty_flag==1" v-for="project in projects">
                                 <tr class="row" v-if="project.title.toLowerCase().indexOf(search.toLowerCase())!=-1||project.subtitle.toLowerCase().indexOf(search.toLowerCase())!=-1||search==''">
                                     <td class="col-2 col-lg-2">{{project.id}}</td>
-                                    <td class="col-2 col-lg-2"><img :src="'http://localhost:4941/api/v2/'+project.imageUri" class="img-fluid" height="100" width="100"></td>
+                                    <td class="col-2 col-lg-2"><img :src="'http://localhost:4941/api/v2/'+project.imageUri" class="img-fluid" height="100" width="100" onerror="javascript:this.src='/src/img/default.png'; this.onerror=null;"></td>
                                     <td class="col-3 col-lg-3">{{project.title}}</td>
                                     <td class="col-3 col-lg-3">{{project.subtitle}}</td>
                                     <td class="col-2 col-lg-2 align-self-center" style="border: 1px solid transparent">
-                                        <button v-if="as_creator_id.indexOf(project.id)!=-1" class="btn btn-secondary" type="button" @click="view_creator(project.id)">creator</button>
-                                        <button v-else-if="as_backer_id.indexOf(project.id)!=-1" class="btn btn-secondary" type="button" @click="view_backer(project.id)">backer</button>
-                                        <button v-else="" class="btn btn-secondary" type="button" @click="view_pledge(project.id)">view</button>
+                                        <button v-if="as_creator_id.indexOf(project.id)!=-1" class="btn btn-secondary" type="button" @click="view_creator(project.id)" style="width:90px">Created</button>
+                                        <button v-else-if="as_backer_id.indexOf(project.id)!=-1" class="btn btn-secondary" type="button" @click="view_backer(project.id)" style="width:90px">Pledged</button>
+                                        <button v-else="" class="btn btn-secondary" type="button" @click="view_pledge(project.id)" style="width:90px">Enter</button>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -123,7 +123,7 @@
                     <div class="col-5 offset-1 col-lg-2">
                         <h5>Links</h5>
                         <ul class="list-unstyled">
-                            <li><router-link :to="{path: '/login_home'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/create_new'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-compass fa-lg"></span>&nbspStart</router-link></li>
                             <li><router-link :to="{path: '/login_about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
                             <li><router-link :to="{path: '/login_project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
                             <li><router-link :to="{path: '/login_contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
@@ -195,6 +195,7 @@
                     },
                 ).then(function(res){
                     this.$router.push({path: '/'});
+                    this.$router.islogin=false;
                     this.$session.destroy();
                 }, function (err) {
                     console.log(err);
@@ -211,6 +212,9 @@
             },
             my_profile() {
                 this.$router.push({path: '/profile'});
+            },
+            modify_user() {
+                this.$router.push({path: '/user_modify'});
             },
             view_my_project(){
                 this.$http.get('http://localhost:4941/api/v2/projects?open=true')

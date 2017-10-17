@@ -43,15 +43,18 @@ const routes = [
     },
     {
         path: "/profile",
-        component: Profile
+        component: Profile,
+        meta: { requiresAuth: true }
     },
     {
         path: "/create_new",
-        component: CreateNew
+        component: CreateNew,
+        meta: { requiresAuth: true }
     },
     {
         path: "/my_project",
         component: MyProject,
+        meta: { requiresAuth: true }
     },
     {
         path: "/project_detail/:pro_id",
@@ -59,29 +62,45 @@ const routes = [
     },
     {
         path: "/my_pledge",
-        component: MyPledge
+        component: MyPledge,
+        meta: { requiresAuth: true }
     },
     {
         path: "/user_modify",
-        component: UserModify
+        component: UserModify,
+        meta: { requiresAuth: true }
     },
     {
         path: "/login_project",
-        component: LoginProject
+        component: LoginProject,
+        meta: { requiresAuth: true }
     },
     {
         path: "/login_contact",
-        component: LoginContact
+        component: LoginContact,
+        meta: { requiresAuth: true }
     },
     {
         path: "/login_about",
-        component: LoginAbout
+        component: LoginAbout,
+        meta: { requiresAuth: true }
     }
 ];
 
 const router = new VueRouter({
     routes: routes,
-    mode: 'history'
+    mode: 'history',
+    islogin: 'false'
+});
+
+router.beforeEach((to, from, next) => {
+    const islogin = router.islogin;
+    if (to.meta.requiresAuth && !islogin) {
+        alert('Must login first!');
+        next('/');
+        return
+    }
+    next()
 });
 
 

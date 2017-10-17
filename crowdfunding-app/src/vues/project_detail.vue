@@ -8,11 +8,17 @@
                     </button>
                     <div class="navbar-brand"><img src="../img/logo-small.jpg" height="32" width="53"></div>
                     <div class="collapse navbar-collapse" id="Navbar">
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item"><router-link :to="{path: '/login_home'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
+                        <ul class="navbar-nav mr-auto" v-if="session_flag">
+                            <li class="nav-item"><router-link :to="{path: '/create_new'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-compass fa-lg"></span>&nbspStart</router-link></li>
                             <li class="nav-item"><router-link :to="{path: '/login_about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
                             <li class="nav-item"><router-link :to="{path: '/login_project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
                             <li class="nav-item"><router-link :to="{path: '/login_contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
+                        </ul>
+                        <ul class="navbar-nav mr-auto" v-if="!session_flag">
+                            <li class="nav-item"><router-link :to="{path: '/'}" class="nav-link" >&nbsp&nbsp&nbsp&nbsp<span class="fa fa-home fa-lg"></span> Home</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/about'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbspAbout</router-link></li>
+                            <li class="nav-item active"><router-link :to="{path: '/project'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-list fa-lg"></span> Project</router-link></li>
+                            <li class="nav-item"><router-link :to="{path: '/contact'}" class="nav-link">&nbsp&nbsp&nbsp&nbsp<span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
                         </ul>
                         <div v-if="session_flag">
                         <div class="dropdown">
@@ -104,8 +110,8 @@
                         <td class="col-6 col-lg-5">{{pro_detail.subtitle}}</td>
                     </tr>
                     <tr class="row">
-                        <th class="col-6 col-lg-5 text-center">Creators</th>
-                        <td class="col-6 col-lg-5" v-for="creator in pro_detail.creators">{{creator.username}}</td>
+                        <th class="col-6 col-lg-5 text-center">Creator</th>
+                        <td class="col-2 col-lg-2" v-for="creator in pro_detail.creators">{{creator.username}}</td>
                     </tr>
                     <tr class="row">
                         <th class="col-6 col-lg-5 text-center">Creation Date</th>
@@ -189,6 +195,7 @@
                             <button class="btn-sm btn btn-warning col-3 col-lg-2" type="back" @click="last_page()">Back</button>
                         </div>
                         <div v-if="this.$session.get('pro_status')=='my_pledge'">
+                            <button class="btn-sm btn btn-primary col-3 col-lg-2" type="button" data-toggle="modal" data-target="#make_pledge_modal">Pledge</button>
                             <button class="btn-sm btn btn-warning col-3 col-lg-2" type="back" @click="last_page()">Back</button>
                         </div>
                     </tfoot>
@@ -202,11 +209,17 @@
                 <div class="row">
                     <div class="col-5 offset-1 col-lg-2">
                         <h5>Links</h5>
-                        <ul class="list-unstyled">
-                            <li><router-link :to="{path: '/login_home'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
+                        <ul class="list-unstyled" v-if="session_flag">
+                            <li><router-link :to="{path: '/create_new'}"><span class="fa fa-compass fa-lg"></span> &nbspStart</router-link></li>
                             <li><router-link :to="{path: '/login_about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
                             <li><router-link :to="{path: '/login_project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
                             <li><router-link :to="{path: '/login_contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
+                        </ul>
+                        <ul class="list-unstyled" v-if="!session_flag">
+                            <li><router-link :to="{path: '/'}"><span class="fa fa-home fa-lg"></span> &nbspHome</router-link></li>
+                            <li><router-link :to="{path: '/about'}">&nbsp<span class="fa fa-info fa-lg"></span>&nbsp&nbsp&nbsp&nbspAbout</router-link></li>
+                            <li><router-link :to="{path: '/project'}"><span class="fa fa-list fa-lg"></span> &nbspProject</router-link></li>
+                            <li><router-link :to="{path: '/contact'}"><span class="fa fa-address-card fa-lg"></span> Contact</router-link></li>
                         </ul>
                     </div>
                     <div class="col-6 col-lg-5">
@@ -238,7 +251,7 @@
                 </div>
             </div>
         </div>
-            <!-- close_project_modle -->
+            <!-- close_project_modal -->
         <div id="close_project_modal" class="modal fade" role="dialog">
             <div class="modal-dialog" role="content">
                 <div class="modal-content">
@@ -263,7 +276,7 @@
                 </div>
             </div>
         </div>
-        <!-- modify_rewards_modle -->
+        <!-- modify_rewards_modal -->
         <div id="modify_rewards_modal" class="modal fade" role="dialog">
             <div class="modal-dialog" role="content">
                 <div class="modal-content">
@@ -304,7 +317,7 @@
                 </div>
             </div>
         </div>
-        <!-- make_pledge_modle -->
+        <!-- make_pledge_modal -->
         <div id="make_pledge_modal" class="modal fade" role="dialog">
             <div class="modal-dialog" role="content">
                 <div class="modal-content">
@@ -317,19 +330,37 @@
                     <div class="modal-body">
                         <form>
                                 <div class="form-group row">
-                                    <label class="col-5 col-lg-3 col-form-label">Amount</label>
+                                    <label class="col-5 col-lg-4 col-form-label">Amount</label>
                                     <div class="col-7 col-lg-7">
                                         <input type="text" class="form-control" name="pledge_amount" placeholder="Amount" v-model="pledge_amount">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-5 col-lg-3 col-form-label">Card No.<span style="color:red">*</span></label>
+                                    <label class="col-5 col-lg-4 col-form-label">Name<span style="color:red">*</span></label>
+                                    <div class="col-7 col-lg-7">
+                                        <input type="text" class="form-control" name="Name" placeholder="Name" v-model="name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-5 col-lg-4 col-form-label">Card No.<span style="color:red">*</span></label>
                                     <div class="col-7 col-lg-7">
                                         <input type="text" class="form-control" name="reward_desc" placeholder="Card No." v-model="card_no">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-5 col-lg-3 col-form-label">Anonymous</label>
+                                    <label class="col-5 col-lg-4 col-form-label">Expired Date<span style="color:red">*</span></label>
+                                    <div class="col-7 col-lg-7">
+                                        <input type="text" class="form-control" name="expire_date" placeholder="MM/YY" v-model="expire_date">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-5 col-lg-4 col-form-label">CVV2<span style="color:red">*</span></label>
+                                    <div class="col-5 col-lg-3">
+                                            <input type="text" class="form-control" name="CVV2" placeholder="CVV2" v-model="cvv2">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-5 col-lg-4 col-form-label">Anonymous</label>
                                     <div class="col-7 col-lg-7">
                                         <select id="anonymous" name="anonymous" class="selectpicker selcls">
                                             <option value=1>Yes</option>
@@ -399,14 +430,17 @@
                 reward_amount: [''],
                 reward_desc:[''],
                 error_msg:'',
-                pledge_amount:0,
+                pledge_amount:'',
                 card_no:'',
                 pledge_error_msg:'',
                 image_error_msg:'',
                 file : null,
                 logo:null,
                 dataUrl:'',
-                backers:[]
+                backers:[],
+                name:'',
+                expire_date:'',
+                cvv2:''
             }
         },
         mounted: function () {
@@ -426,6 +460,7 @@
                     },
                 ).then(function(res){
                     this.$router.push({path: '/'});
+                    this.$router.islogin=false;
                     this.$session.destroy();
                 }, function (err) {
                     console.log(err);
@@ -443,6 +478,9 @@
             my_profile() {
                 this.$router.push({path: '/profile'});
             },
+            modify_user() {
+                this.$router.push({path: '/user_modify'});
+            },
             get_project_detail() {
                 this.$http.get('http://localhost:4941/api/v2/projects/'+this.project_id)
                     .then(function (res) {
@@ -450,9 +488,10 @@
                         var timestamp = this.pro_detail.creationDate;
                         this.newDate.setTime(timestamp);
                         if(this.pro_detail.length!=0){
-                            for(let i in this.pro_detail.backers){
-                                if(i>this.pro_detail.backers.length-6){
-                                    this.backers.push(this.pro_detail.backers[i]);
+                            for(let backer of this.pro_detail.backers){
+                                this.backers.push(backer);
+                                if(this.backers.length>=5){
+                                    break;
                                 }
                             }
                         }
@@ -532,7 +571,7 @@
                         "amount": parseInt(this.pledge_amount),
                         "anonymous": ano,
                         "card": {
-                            "authToken": this.card_no
+                            "authToken": this.card_no.length.toString(16)+this.name.length.toString(16)+this.cvv2.length.toString(16)+this.expire_date.length.toString(16)
                         }
                     };
                 this.$http.post('http://localhost:4941/api/v2/projects/'+this.project_id+'/pledge',
@@ -555,6 +594,9 @@
                 this.pledge_amount=0;
                 this.card_no='';
                 this.pledge_error_msg='';
+                this.name='';
+                this.cvv2='';
+                this.expire_date='';
                 $('#anonymous').val(0);
             },
             change_logo(){

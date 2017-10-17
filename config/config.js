@@ -36,6 +36,12 @@ let
             format: String,
             default: 'X-Authorization'
         },
+        cleanstart: {
+            format: 'Boolean',
+            default: true,
+            arg: 'cleanstart',
+            env: 'CLEAN_START'
+        },
         sampledata: {
             format: 'Boolean',
             default: false,
@@ -51,7 +57,6 @@ let
             },
             port: {
                 format: 'port',
-                // default: 6033,
                 default: 3306,
                 arg: 'mysql-port',
                 env: 'SENG365_MYSQL_PORT'
@@ -70,7 +75,6 @@ let
             },
             database: {
                 format: String,
-                // default: 'mysql',
                 default: 'seng365',
                 arg: 'mysql-database',
                 env: 'SENG365_MYSQL_DATABASE'

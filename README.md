@@ -6,6 +6,21 @@ The code is based on the skeletons from labs 3 and 4, and so has a mix of callba
 
 ## Version history
 
+### Version 2.1.10, 7 October 2017
+
+- New config parameter `cleanstart`. If `true` (default, for compatibility with earlier behaviour) then remove any existing data and recreate the db schema on startup. If `false`, then do this only if it does not already exist.
+- Sample data will only be added if `sampledata` is `true` and if the db schema has been recreated, irregardless of the value of `cleanstart` (so won't add duplicate data)
+- POST /admin/reset will always reset the db schema, and will add sample data if `sampledata` is `true`
+
+### Version 2.1.9, 6 October 2017
+
+- Changed API response when login again with same credentials without logging out so now just return 200 and an unchanged token
+- Sample images from Wikimedia Commons, under various Creative Commons licenses (see sample.data.js)
+
+### Version 2.1.8, 4 October 2017
+
+- Sample project data scraped from Kickstarter
+
 ### Version 2.1.7, 3 October 2017
 
 - Fix for issue where projects created without rewards would crash model
@@ -74,8 +89,17 @@ and start the service with `node server.js --env=production`:
 }
 ```
 
-### Tests
+## Sample data
+
+Sample data can be included by setting the config variable `sampledata` to `true` (default is `false`) before starting the service. Once sample data is enabled, 
+`POST /admin/reset` will also re-add the sample data after the database is reset.
+ 
+Projects are based on a manual scraping of selected Public Good projects from Kickstarter, edited for length.
+Project images have been sourced from Wikimedia Commons, under Creative Commons. Licensing information is included for each image in the 'imagelicense' in sample.data.js.
+
+## Tests
 
 Some simple unit tests can be run through `npm test`. They assume that a database is already running on the defined config.
 
 The full API can be tested by starting this service with `npm start` and then running the tests from the `api-v2-test` repo.
+

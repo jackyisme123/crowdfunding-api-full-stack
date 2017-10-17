@@ -43,7 +43,6 @@
         </header>
 
         <div id="body">
-            <br>
             <div class="container">
                 <div class="row-content row">
                     <div class="col">
@@ -101,19 +100,94 @@
                             <div class="col-12">
                                 <img :src="'http://localhost:4941/api/v2/'+project.imageUri" height="250" width="250" onerror="javascript:this.src='/src/img/default.png'; this.onerror=null;">
                             </div>
-                            <div class="col-12 text-right" style="font-family: 'Times New Roman';font-size: 0.9em;color:black;">
-                                <p>By&nbsp{{project.creators[0].username}}</p>
+                            <div class="col-4 pull-right" style="font-family: 'black';font-size: 0.8em;color:black;">
+                                <p v-if="project.creators.length!=0">By&nbsp{{project.creators[0].username}}<br>{{new Date(new Date().setTime(project.creationDate)).toLocaleDateString()}}</p>
+                                <p v-if="project.creators.length==0">By&nbspNull<br>{{new Date(new Date().setTime(project.creationDate)).toLocaleDateString()}}</p>
                             </div>
-                            <h3 class="col-12">
+                            <div class="offset-1 col-7" v-if="parseInt(project.progress.numberOfBackers)>=5"><span class="badge badge-danger">HOT</span></div>
+                            <div class="offset=1 col-7" v-else>&nbsp</div>
+                            <div class="offset-1 col-7" v-if="parseInt(project.progress.currentPledged-project.target)>0"><span class="badge badge-success">Finished</span></div>
+                            <div class="offset-1 col-7" v-else-if="parseInt(project.progress.currentPledged/project.target*100)>75"><span class="badge badge-warning">Nearly Finished</span></div>
+                            <div class="offset-1 col-7" v-else>&nbsp</div>
+                            <hr>
+                            <div class="col-12">
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar"
+                                         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" :style="'width: '+ (project.progress.currentPledged/project.target*100).toString() +'%'">
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                               <div class="col-3">
+                                    <p class="col-12 text-center" style="font-family: Frutiger;font-size: 0.8em;font-weight: lighter">{{parseInt(project.progress.currentPledged/project.target*100)}}%<br>funded</p>
+                                </div>
+                                <div class="col-3">
+                                    <p class="col-12 text-center" style="font-family: Frutiger;font-size: 0.8em;font-weight: lighter">${{project.progress.currentPledged}}<br>pledged</p>
+                                </div>
+                                <div class="col-3">
+                                    <p class="col-12 text-center" style="font-family: Frutiger;font-size: 0.8em;font-weight: lighter">{{project.progress.numberOfBackers}}<br>backers</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <h4 class="col-12">
                                 {{project.title}}
-                            </h3>
-                            <p class="col-12" style="font-family: Arial;font-style: italic;font-size: 1.2em;">
+                            </h4>
+                            <p class="col-12" style="font-family: Arial;font-style: italic;font-size: 1.0em;">
                                 {{project.subtitle}}
                             </p>
                         </div>
 
                 </div>
-                <hr>
+                <div class="row-content row">
+                    <div class="col-12">
+                        <h2>Day of Dream</h2>
+                        <br>
+                    </div>
+
+                    <div class="img_wrapper col-12 offset-lg-1 col-lg-3" v-for="project in pop_projects" @click="view_detail(project.id)">
+                        <div class="col-12">
+                            <img :src="'http://localhost:4941/api/v2/'+project.imageUri" height="250" width="250" onerror="javascript:this.src='/src/img/default.png'; this.onerror=null;">
+                        </div>
+                        <div class="col-4 pull-right" style="font-family: 'black';font-size: 0.8em;color:black;">
+                            <p v-if="project.creators.length!=0">By&nbsp{{project.creators[0].username}}<br>{{new Date(new Date().setTime(project.creationDate)).toLocaleDateString()}}</p>
+                            <p v-if="project.creators.length==0">By&nbspNull<br>{{new Date(new Date().setTime(project.creationDate)).toLocaleDateString()}}</p>
+                        </div>
+                        <div class="offset=1 col-7" v-if="parseInt(project.progress.numberOfBackers)>=5"><span class="badge badge-danger">HOT</span></div>
+                        <div class="offset=1 col-7" v-else>&nbsp</div>
+                        <div class="offset=1 col-7" v-if="parseInt(project.progress.currentPledged-project.target)>0"><span class="badge badge-success">Finished</span></div>
+                        <div class="offset=1 col-7" v-else-if="parseInt(project.progress.currentPledged/project.target*100)>75"><span class="badge badge-warning">Nearly Finished</span></div>
+                        <div class="offset=1 col-7" v-else>&nbsp</div>
+                        <hr>
+                        <div class="col-12">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar"
+                                     aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" :style="'width: '+ (project.progress.currentPledged/project.target*100).toString() +'%'">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="col-12 text-center" style="font-family: Frutiger;font-size: 0.8em;font-weight: lighter">{{parseInt(project.progress.currentPledged/project.target*100)}}%<br>funded</p>
+                            </div>
+                            <div class="col-3">
+                                <p class="col-12 text-center" style="font-family: Frutiger;font-size: 0.8em;font-weight: lighter">${{project.progress.currentPledged}}<br>pledged</p>
+                            </div>
+                            <div class="col-3">
+                                <p class="col-12 text-center" style="font-family: Frutiger;font-size: 0.8em;font-weight: lighter">{{project.progress.numberOfBackers}}<br>backers</p>
+                            </div>
+                        </div>
+                        <hr>
+                         <h4 class="col-12">
+                            {{project.title}}
+                        </h4>
+                        <p class="col-12" style="font-family: Arial;font-style: italic;font-size: 1.0em;">
+                            {{project.subtitle}}
+                        </p>
+                    </div>
+
+                </div>
             </div>
         </div>
         <div id="footer" class="footer">
@@ -167,17 +241,18 @@
         data() {
             return {
                 empty_flag:0,
-                new_projects:[]
+                new_projects:[],
+                pop_projects:[]
             }
         },
         mounted: function(){
-            this.default();
             this.get_all_projects();
+            this.default();
         },
         methods: {
             default(){
                 $('[data-toggle="tooltip"]').tooltip();
-                $("#mycarousel").carousel({interval:5000});
+                $("#mycarousel").carousel({interval:4000});
 
             },
             get_all_projects(){
@@ -189,14 +264,18 @@
                             this.empty_flag=1;
                             let projects=res.body;
                             let pro_ids= [];
+                            let pro_ran_ids=[];
                             if(projects.length>3){
-                                pro_ids.push(projects[projects.length-1].id);
-                                pro_ids.push(projects[projects.length-2].id);
-                                pro_ids.push(projects[projects.length-3].id);
+                                pro_ids.push(projects[0].id);
+                                pro_ids.push(projects[1].id);
+                                pro_ids.push(projects[2].id);
+                                pro_ran_ids= this.randNum(1,projects.length,3);
                             }else{
                                 for(let pro of projects){
                                     pro_ids.push(pro.id);
+                                    pro_ran_ids.push(pro.id);
                                 }
+
                             }
                             if(pro_ids.length!=0){
                                 for(let id of pro_ids){
@@ -205,6 +284,12 @@
                                         this.new_projects.push(res1.body);
                                     });
                                 }
+                                for(let ran_id of pro_ran_ids){
+                                    this.$http.get('http://localhost:4941/api/v2/projects/'+ran_id)
+                                        .then(function (res2) {
+                                            this.pop_projects.push(res2.body);
+                                        });
+                                }
 
                             }
                         }
@@ -212,6 +297,36 @@
             },
             view_detail(pro_id){
                 this.$router.push({path: '/project_detail/'+ pro_id});
+            },
+            randNum(min, max, num) {
+                var arr = [];
+                let count=0;
+                let t = 0;
+                while(count<3){
+                    t = parseInt(Math.random() * (max - min + 1) + min);
+                    if(arr.indexOf(t)==-1){
+                        arr.push(t);
+                        count++;
+                    }
+                }
+                return arr;
+//
+//                function fn(i) {
+//                    for (i; i < num; i++) {
+//                        t = parseInt(Math.random() * (max - min + 1) + min);
+//                        for (var k in arr) {
+//                            if (arr[k] == t) {
+//                                fn(i);
+//                                break;
+//                            }
+//                        }
+//                        arr[i] = t;
+//                    }
+//                }
+//
+//                fn(0);
+//                return arr
+
             }
 
         }
