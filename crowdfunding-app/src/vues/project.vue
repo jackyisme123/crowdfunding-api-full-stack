@@ -77,13 +77,13 @@
                                     <th class="text-center col-2 col-lg-2"></th>
                                 </tr>
                                 </thead>
-                                <tbody v-if="empty_flag==1" v-for="project in projects">
+                                <tbody v-if="empty_flag==1" v-for="project in current_projects">
                                 <tr class="row" v-if="project.title.toLowerCase().indexOf(search.toLowerCase())!=-1||project.subtitle.toLowerCase().indexOf(search.toLowerCase())!=-1||search==''">
                                     <td class="col-2 col-lg-2">{{project.id}}</td>
                                     <td class="col-2 col-lg-2"><img :src="'http://localhost:4941/api/v2/'+project.imageUri" class="img-fluid" height="100" width="100" onerror="javascript:this.src='/src/img/default.png'; this.onerror=null;"></td>
                                     <td class="col-3 col-lg-3">{{project.title}}</td>
                                     <td class="col-3 col-lg-3">{{project.subtitle}}</td>
-                                    <td class="col-2 col-lg-2 align-self-center" style="border: 1px solid transparent"><button class="btn btn-secondary" type="button" @click="view_detail(project.id)">Enter</button></td>
+                                    <td class="col-2 col-lg-2 align-self-center" style="border: 1px solid transparent"><button class="btn btn-primary" type="button" @click="view_detail(project.id)">Enter</button></td>
                                 </tr>
                                 </tbody>
                                 <tbody v-if="empty_flag==0">
@@ -95,6 +95,18 @@
                                     <td><h2>Empty</h2></td>
                                 </tr>
                                 </tbody>
+                                <tfoot>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-primary" type="button" @click="backward()">&laquo;</button>
+                                    <div v-for="page_num in total_num">
+                                        <button class="btn btn-primary" type="button" @click="go_page(page_num)">{{page_num}}</button>
+                                    </div>
+                                    <button class="btn btn-primary" type="button" @click="forward()">&raquo;</button>
+                                    </div>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -152,7 +164,11 @@
             return {
                 projects: [],
                 empty_flag: 0,
-                search:''
+                search:'',
+                page_num:1,
+                per_page:5,
+                total_num:0,
+                current_projects:[]
             }
         },
         mounted: function(){
@@ -167,13 +183,37 @@
                     }else{
                         this.empty_flag=1;
                         this.projects=res.body;
+                        this.total_num=Math.ceil(this.projects.length/this.per_page);
+                        this.current_projects=[];
+                        for(let i in this.projects){
+                            if(i>=this.per_page*(this.page_num-1)&&i<=this.per_page*(this.page_num-1)+this.per_page-1) {
+                                this.current_projects.push(this.projects[i]);
+                            }
+                        }
                     }
                 });
             },
             view_detail(pro_id) {
                 this.$router.push({path: '/project_detail/'+ pro_id});
 
+            },
+            go_page(pn){
+                this.page_num=pn;
+                this.get_all_projects();
+            },
+            forward(){
+                if(this.page_num<this.total_num){
+                    this.page_num+=1;
+                    this.get_all_projects();
+                }
+            },
+            backward(){
+                if(this.page_num>1){
+                    this.page_num-=1;
+                    this.get_all_projects();
+                }
             }
+
         }
     }
 </script>

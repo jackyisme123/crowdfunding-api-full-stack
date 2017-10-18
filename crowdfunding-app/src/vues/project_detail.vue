@@ -440,7 +440,8 @@
                 backers:[],
                 name:'',
                 expire_date:'',
-                cvv2:''
+                cvv2:'',
+                ano_total:0
             }
         },
         mounted: function () {
@@ -488,8 +489,26 @@
                         var timestamp = this.pro_detail.creationDate;
                         this.newDate.setTime(timestamp);
                         if(this.pro_detail.length!=0){
+                            for(let backer1 of this.pro_detail.backers){
+                                if(backer1.username=='anonymous'){
+                                    this.ano_total+=parseInt(backer1.amount);
+                                }
+                            }
+                            let ano_flag=0;
                             for(let backer of this.pro_detail.backers){
-                                this.backers.push(backer);
+                                if(backer.username=='anonymous') {
+                                    if (ano_flag == 0) {
+                                        backer.amount=this.ano_total;
+                                        this.backers.push(backer);
+                                        ano_flag = 1;
+                                    } else {
+                                        continue;
+                                    }
+                                }else{
+                                    this.backers.push(backer);
+                                }
+
+
                                 if(this.backers.length>=5){
                                     break;
                                 }

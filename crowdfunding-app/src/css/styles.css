@@ -157,6 +157,12 @@ body.modal-open[style] {
 
  }
 
+.btn-group .btn{
+    padding: 9px;
+    border: solid 1px silver;
+
+}
+
 
 
 
