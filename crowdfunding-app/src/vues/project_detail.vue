@@ -110,7 +110,7 @@
                         <td class="col-6 col-lg-5">{{pro_detail.subtitle}}</td>
                     </tr>
                     <tr class="row">
-                        <th class="col-6 col-lg-5 text-center">Creator</th>
+                        <th class="col-6 col-lg-5 text-center">Creators</th>
                         <td class="col-2 col-lg-2" v-for="creator in pro_detail.creators">{{creator.username}}</td>
                     </tr>
                     <tr class="row">
@@ -460,7 +460,7 @@
                     },
                 ).then(function(res){
                     this.$router.push({path: '/'});
-                    this.$router.islogin=false;
+                    window.sessionStorage.setItem('islogin',false);
                     this.$session.destroy();
                 }, function (err) {
                     console.log(err);

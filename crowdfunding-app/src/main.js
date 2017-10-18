@@ -14,16 +14,16 @@ import LoginProject from './vues/login_project.vue'
 import LoginContact from './vues/login_contact.vue'
 import LoginAbout from './vues/login_about.vue'
 
+
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 import VueSession from 'vue-session';
-import VueInstant from '../node_modules/vue-instant/dist/vue-instant.common.js';
+import VueInstant from 'vue-instant';
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(VueSession);
 Vue.use(VueInstant);
 // Vue.http.options.emulateJSON = true;
-
 const routes = [
     {
         path: "/",
@@ -89,13 +89,14 @@ const routes = [
 
 const router = new VueRouter({
     routes: routes,
-    mode: 'history',
-    islogin: 'false'
+    mode: 'history'
 });
 
+let session_storage = window.sessionStorage;
 router.beforeEach((to, from, next) => {
-    const islogin = router.islogin;
-    if (to.meta.requiresAuth && !islogin) {
+    console.log(session_storage.getItem('islogin'));
+    console.log(to.meta.requiresAuth);
+    if (to.meta.requiresAuth && session_storage.getItem('islogin')=='false') {
         alert('Must login first!');
         next('/');
         return
@@ -109,6 +110,5 @@ new Vue({
     router: router,
   render: h => h(App)
 });
-
 
 

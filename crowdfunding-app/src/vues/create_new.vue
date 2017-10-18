@@ -219,7 +219,7 @@
                     },
                 ).then(function(res){
                     this.$router.push({path: './'});
-                    this.$router.islogin=false;
+                    window.sessionStorage.setItem('islogin',false);
                     this.$session.destroy();
                 }, function (err) {
                     console.log(err);
@@ -257,6 +257,9 @@
                         creators1.push({"id": parseInt(creator_id)});
                     }
                 }
+                if(this.creators.indexOf(this.$session.get('id').toString())==-1){
+                    this.error_msg='Creators must include yourself';
+                }else{
                 let rewards =[];
                 let create_json;
                 if(this.reward_amount[0] != '') {
@@ -295,10 +298,11 @@
                             this.default_create_new();
                             this.$router.push({path:'/my_project'});
                     }, function (err) {
-                        this.error_msg='Error';
+                        this.error_msg='ERROR! Pls check enter info and try again later';
                     })
                 }else{
                     this.error_msg='red* options can not be empty';
+                }
                 }
 
             },

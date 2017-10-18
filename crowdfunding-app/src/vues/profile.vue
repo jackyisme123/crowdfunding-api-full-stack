@@ -251,7 +251,8 @@
                 my_pledges: [],
                 empty_flag: 0,
                 my_projects: [],
-                empty_flag1:0
+                empty_flag1:0,
+                test: this.islogin
             }
         },
         mounted: function () {
@@ -273,7 +274,7 @@
                     },
                     ).then(function(res){
                     this.$router.push({path: '/'});
-                    this.$router.islogin=false;
+                    window.sessionStorage.setItem('islogin',false);
                     this.$session.destroy();
                     }, function (err) {
                     console.log(err);

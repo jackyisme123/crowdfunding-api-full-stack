@@ -170,7 +170,7 @@
                     },
                 ).then(function(res){
                     this.$router.push({path: '/'});
-                    this.$router.islogin=false;
+                    window.sessionStorage.setItem('islogin',false);
                     this.$session.destroy();
                 }, function (err) {
                     console.log(err);
