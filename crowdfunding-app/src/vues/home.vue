@@ -106,8 +106,8 @@
                             </div>
                             <div class="offset-1 col-7" v-if="parseInt(project.progress.numberOfBackers)>=5"><span class="badge badge-danger">HOT</span></div>
                             <div class="offset=1 col-7" v-else>&nbsp</div>
-                            <div class="offset-1 col-7" v-if="parseInt(project.progress.currentPledged-project.target)>0"><span class="badge badge-success">Finished</span></div>
-                            <div class="offset-1 col-7" v-else-if="parseInt(project.progress.currentPledged/project.target*100)>75"><span class="badge badge-warning">Nearly Finished</span></div>
+                            <div class="offset-1 col-7" v-if="parseInt(project.progress.currentPledged-project.target)>=0"><span class="badge badge-success">Finished</span></div>
+                            <div class="offset-1 col-7" v-else-if="parseInt(project.progress.currentPledged/project.target*100)>75"><span class="badge badge-warning">Nearly Finish</span></div>
                             <div class="offset-1 col-7" v-else>&nbsp</div>
                             <hr>
                             <div class="col-12">
@@ -155,8 +155,8 @@
                         </div>
                         <div class="offset=1 col-7" v-if="parseInt(project.progress.numberOfBackers)>=5"><span class="badge badge-danger">HOT</span></div>
                         <div class="offset=1 col-7" v-else>&nbsp</div>
-                        <div class="offset=1 col-7" v-if="parseInt(project.progress.currentPledged-project.target)>0"><span class="badge badge-success">Finished</span></div>
-                        <div class="offset=1 col-7" v-else-if="parseInt(project.progress.currentPledged/project.target*100)>75"><span class="badge badge-warning">Nearly Finished</span></div>
+                        <div class="offset=1 col-7" v-if="parseInt(project.target)- parseInt(project.progress.currentPledged)<=0"><span class="badge badge-success">Finished</span></div>
+                        <div class="offset=1 col-7" v-else-if="parseInt(project.progress.currentPledged/project.target*100)>75"><span class="badge badge-warning">Nearly Finish</span></div>
                         <div class="offset=1 col-7" v-else>&nbsp</div>
                         <hr>
                         <div class="col-12">

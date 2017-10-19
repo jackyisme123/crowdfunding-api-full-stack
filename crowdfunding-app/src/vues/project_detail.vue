@@ -290,13 +290,13 @@
                         <form>
                             <div :index="index_reward" v-for="(amount, index_reward) in reward_amount">
                                 <div class="form-group row">
-                                    <label class="col-5 col-lg-3 col-form-label">Amount</label>
+                                    <label class="col-5 col-lg-3 col-form-label">Amount<span style="color:red">*</span></label>
                                     <div class="col-7 col-lg-7">
                                         <input type="text" class="form-control" name="reward_amount" placeholder="Amount" v-model="reward_amount[index_reward]">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-5 col-lg-3 col-form-label">Description</label>
+                                    <label class="col-5 col-lg-3 col-form-label">Description<span style="color:red">*</span></label>
                                     <div class="col-7 col-lg-7">
                                         <textarea type="text" class="form-control" rows="5" name="reward_desc" placeholder="Description" v-model="reward_desc[index_reward]"></textarea>
                                     </div>

@@ -95,8 +95,8 @@
                                     <td class="col-3 col-lg-3">{{project.title}}</td>
                                     <td class="col-3 col-lg-3">{{project.subtitle}}</td>
                                     <td class="col-2 col-lg-2 align-self-center" style="border: 1px solid transparent">
-                                        <button v-if="as_creator_id.indexOf(project.id)!=-1" class="btn btn-secondary" type="button" @click="view_creator(project.id)" style="width:90px">Created</button>
-                                        <button v-else-if="as_backer_id.indexOf(project.id)!=-1" class="btn btn-secondary" type="button" @click="view_backer(project.id)" style="width:90px">Pledged</button>
+                                        <button v-if="as_creator_id.indexOf(project.id)!=-1" class="btn btn-primary" type="button" @click="view_creator(project.id)" style="width:90px">Created</button>
+                                        <button v-else-if="as_backer_id.indexOf(project.id)!=-1" class="btn btn-primary" type="button" @click="view_backer(project.id)" style="width:90px">Pledged</button>
                                         <button v-else="" class="btn btn-primary" type="button" @click="view_pledge(project.id)" style="width:90px">Enter</button>
                                     </td>
                                 </tr>
